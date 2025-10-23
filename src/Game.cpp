@@ -53,7 +53,24 @@ void Game::mouseClicked(sf::Event event)
 
 void Game::keyPressed(sf::Event event)
 {
+	if (in_menu)
+	{
 
+		if ((event.key.code == sf::Keyboard::Up) || (event.key.code == sf::Keyboard::Down))
+		{
+
+			toggleMenuSelection();
+
+		}
+		else if (event.key.code == sf::Keyboard::Enter)
+		{
+
+			handleMenuSelection();
+			
+
+		}
+
+	}
 }
 
 void Game::keyReleased(sf::Event event)
@@ -94,7 +111,7 @@ void Game::menuTexts()
 	menu_text.setString("Paw-der Patrol");
 	menu_text.setCharacterSize(140);
 	menu_text.setLetterSpacing(2);
-	menu_text.setFillColor(sf::Color::White);
+	menu_text.setFillColor(sf::Color::Black);
 	menu_text.setPosition(
 		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 50);
 
@@ -103,7 +120,7 @@ void Game::menuTexts()
 	play_text.setString(" [PLAY]");
 	play_text.setCharacterSize(60);
 	play_text.setLetterSpacing(2);
-	play_text.setFillColor(sf::Color::White);
+	play_text.setFillColor(sf::Color::Black);
 	play_text.setPosition(
 		window.getSize().x / 2 - play_text.getGlobalBounds().width / 2, 300);
 
@@ -112,8 +129,50 @@ void Game::menuTexts()
 	quit_text.setString(" QUIT");
 	quit_text.setCharacterSize(60);
 	quit_text.setLetterSpacing(2);
-	quit_text.setFillColor(sf::Color::White);
+	quit_text.setFillColor(sf::Color::Black);
 	quit_text.setPosition(
 		window.getSize().x / 2 - quit_text.getGlobalBounds().width / 2, 400);
 }
 
+void Game::toggleMenuSelection()
+{
+
+	play_selected = !play_selected;
+
+	if (play_selected)
+	{
+
+		play_text.setString(" [PLAY]");
+		quit_text.setString(" QUIT");
+
+	}
+
+	else
+	{
+
+		play_text.setString("  PLAY");
+		quit_text.setString("[QUIT]");
+
+	}
+
+}
+
+void Game::handleMenuSelection()
+{
+
+	if (play_selected)
+	{
+
+		in_menu = false;
+		is_running = true;
+
+
+	}
+	else
+	{
+
+		window.close();
+
+	}
+
+}

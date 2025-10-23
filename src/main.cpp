@@ -57,7 +57,7 @@ int main()
     //'update' element of the game loop
     game.update(dt);
 
-    window.clear(sf::Color::Black);
+    window.clear(sf::Color(67, 222, 181));
 
     //'render' element of the game loop
     game.render();

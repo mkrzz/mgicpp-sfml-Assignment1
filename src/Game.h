@@ -33,6 +33,8 @@ class Game
 
   void menuTexts();
   void renderMenu();
+  void toggleMenuSelection();
+  void handleMenuSelection();
 
 };
 
