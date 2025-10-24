@@ -112,26 +112,32 @@ void Game::menuTexts()
 	menu_text.setCharacterSize(140);
 	menu_text.setLetterSpacing(2);
 	menu_text.setFillColor(sf::Color::Black);
+	menu_text.setOutlineColor(sf::Color::White);
+	menu_text.setOutlineThickness(3);
 	menu_text.setPosition(
 		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 50);
 
 	// play text in menu
 	play_text.setFont(play_font);
-	play_text.setString(" [PLAY]");
-	play_text.setCharacterSize(60);
+	play_text.setString("  PLAY ");
+	play_text.setCharacterSize(80);
 	play_text.setLetterSpacing(2);
 	play_text.setFillColor(sf::Color::Black);
+	play_text.setOutlineColor(sf::Color::White);
+	play_text.setOutlineThickness(2);
 	play_text.setPosition(
-		window.getSize().x / 2 - play_text.getGlobalBounds().width / 2, 300);
+		window.getSize().x / 4 - play_text.getGlobalBounds().width / 2, 300);
 
 	// quit text in menu
 	quit_text.setFont(play_font);
-	quit_text.setString(" QUIT");
-	quit_text.setCharacterSize(60);
+	quit_text.setString("  quit  ");
+	quit_text.setCharacterSize(80);
 	quit_text.setLetterSpacing(2);
-	quit_text.setFillColor(sf::Color::Black);
+	quit_text.setFillColor(sf::Color::White);
+	quit_text.setOutlineColor(sf::Color::Black);
+	quit_text.setOutlineThickness(2);
 	quit_text.setPosition(
-		window.getSize().x / 2 - quit_text.getGlobalBounds().width / 2, 400);
+		window.getSize().x / 4 - quit_text.getGlobalBounds().width / 2, 400);
 }
 
 void Game::toggleMenuSelection()
@@ -142,17 +148,25 @@ void Game::toggleMenuSelection()
 	if (play_selected)
 	{
 
-		play_text.setString(" [PLAY]");
-		quit_text.setString(" QUIT");
+		play_text.setString("  PLAY ");
+		play_text.setFillColor(sf::Color::Black);
+		play_text.setOutlineColor(sf::Color::White);
+		quit_text.setFillColor(sf::Color::White);
+		quit_text.setOutlineColor(sf::Color::Black);
+		quit_text.setString("  quit  ");
 
 	}
 
 	else
 	{
 
-		play_text.setString("  PLAY");
-		quit_text.setString("[QUIT]");
-
+		play_text.setString("  play  ");
+		play_text.setFillColor(sf::Color::White);
+		play_text.setOutlineColor(sf::Color::Black);
+		quit_text.setFillColor(sf::Color::Black);
+		quit_text.setOutlineColor(sf::Color::White);
+		quit_text.setString("  QUIT  ");
+		 
 	}
 
 }
