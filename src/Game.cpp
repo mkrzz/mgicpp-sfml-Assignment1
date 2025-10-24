@@ -86,6 +86,9 @@ void Game::renderMenu()
 	window.draw(menu_text);
 	window.draw(play_text);
 	window.draw(quit_text);
+	window.draw(box);
+	window.draw(underscore);	
+	window.draw(underscore1);
 
 }
 
@@ -126,7 +129,7 @@ void Game::menuTexts()
 	play_text.setOutlineColor(sf::Color::White);
 	play_text.setOutlineThickness(2);
 	play_text.setPosition(
-		window.getSize().x / 4 - play_text.getGlobalBounds().width / 2, 300);
+		window.getSize().x / 4.3 - play_text.getGlobalBounds().width / 2, 300);
 
 	// quit text in menu
 	quit_text.setFont(play_font);
@@ -137,7 +140,25 @@ void Game::menuTexts()
 	quit_text.setOutlineColor(sf::Color::Black);
 	quit_text.setOutlineThickness(2);
 	quit_text.setPosition(
-		window.getSize().x / 4 - quit_text.getGlobalBounds().width / 2, 400);
+		window.getSize().x / 4.3 - quit_text.getGlobalBounds().width / 2, 400);
+
+	////white border in menu
+	//box.setSize(sf::Vector2f(1073, 712));
+	//box.setPosition(3, 3);
+	//box.setFillColor(sf::Color(0, 0, 0, 0));
+	//box.setOutlineColor(sf::Color::White);
+	//box.setOutlineThickness(5);
+
+	underscore.setSize(sf::Vector2f(850, 1));
+	underscore.setOutlineColor(sf::Color::White);
+	//underscore.setOutlineThickness(1);
+	underscore.setPosition(100, 250);
+
+	underscore1.setSize(sf::Vector2f(850, 1));
+	underscore1.setOutlineColor(sf::Color::White);
+	//underscore.setOutlineThickness(1);
+	underscore1.setPosition(100, 550);
+
 }
 
 void Game::toggleMenuSelection()

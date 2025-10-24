@@ -27,6 +27,10 @@ class Game
   sf::Text play_text;
   sf::Text quit_text;
 
+  sf::RectangleShape box;
+  sf::RectangleShape underscore;
+  sf::RectangleShape underscore1;
+
   bool in_menu = true;
   bool play_selected = true;
   bool is_running = true;
