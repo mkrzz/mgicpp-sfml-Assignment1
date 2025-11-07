@@ -27,10 +27,6 @@ class Game
   sf::Text play_text;
   sf::Text quit_text;
 
-  sf::RectangleShape box;
-  sf::RectangleShape underscore;
-  sf::RectangleShape underscore1;
-
   sf::Sprite* character;
   sf::Sprite* passport;
 
