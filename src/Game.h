@@ -27,6 +27,9 @@ class Game
   sf::Text play_text;
   sf::Text quit_text;
 
+  sf::Font stop_font;
+  sf::Text stop_text;
+
   sf::Sprite* character;
   sf::Sprite* passport;
 
@@ -35,6 +38,15 @@ class Game
 
   sf::Sprite menu_background;
   sf::Texture menu_background_texture;
+
+  sf::Sprite game_background;
+  sf::Texture game_background_texture;
+
+  sf::Sprite officer_white;
+  sf::Texture officer_white_texture;
+
+  sf::Sprite officer_black;
+  sf::Texture officer_black_texture;
 
 
   bool in_menu = true;
@@ -45,6 +57,7 @@ class Game
   void renderMenu();
   void toggleMenuSelection();
   void handleMenuSelection();
+  void renderGame();
 
 
 
