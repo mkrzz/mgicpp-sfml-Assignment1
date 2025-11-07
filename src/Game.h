@@ -31,6 +31,16 @@ class Game
   sf::RectangleShape underscore;
   sf::RectangleShape underscore1;
 
+  sf::Sprite* character;
+  sf::Sprite* passport;
+
+  sf::Texture* animals = new sf::Texture[3];
+  sf::Texture* passports = new sf::Texture[3];
+
+  sf::Sprite menu_background;
+  sf::Texture menu_background_texture;
+
+
   bool in_menu = true;
   bool play_selected = true;
   bool is_running = true;
@@ -39,6 +49,8 @@ class Game
   void renderMenu();
   void toggleMenuSelection();
   void handleMenuSelection();
+
+
 
 };
 

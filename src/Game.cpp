@@ -12,15 +12,39 @@ Game::Game(sf::RenderWindow& game_window)
 Game::~Game()
 {
 
+	delete[] animals;
+	delete[] passports;
+	delete character;
+	delete passport;
+
 }
 
 bool Game::init()
 {
-	in_menu = true;
+	
+	if (!menu_background_texture.loadFromFile("../Data/Images/Stock_Images/Menu_back.jpeg"))
+	{
+		std::cout << "background texture did not load \n";
+	}
+	menu_background.setTexture(menu_background_texture);
+	menu_background.setScale(.17, .17);
+	menu_background.setPosition(70, 250);	
 
-	menuTexts();
+	character = new sf::Sprite;
+	passport = new sf::Sprite;
 
-  return true;
+	if (in_menu)
+	{
+		in_menu = true;
+
+	    menuTexts();
+		renderMenu();
+
+	}
+	
+
+    return true;
+
 }
 
 void Game::update(float dt)
@@ -82,13 +106,16 @@ void Game::keyReleased(sf::Event event)
 
 void Game::renderMenu()
 {
+	
 
+	window.draw(menu_background);
 	window.draw(menu_text);
 	window.draw(play_text);
 	window.draw(quit_text);
-	window.draw(box);
-	window.draw(underscore);	
-	window.draw(underscore1);
+	/*window.draw(box);*/
+	/*window.draw(underscore);*/	
+	/*window.draw(underscore1);*/
+		
 
 }
 
@@ -118,7 +145,7 @@ void Game::menuTexts()
 	menu_text.setOutlineColor(sf::Color::White);
 	menu_text.setOutlineThickness(3);
 	menu_text.setPosition(
-		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 50);
+		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 10);
 
 	// play text in menu
 	play_text.setFont(play_font);
@@ -129,7 +156,7 @@ void Game::menuTexts()
 	play_text.setOutlineColor(sf::Color::White);
 	play_text.setOutlineThickness(2);
 	play_text.setPosition(
-		window.getSize().x / 4.3 - play_text.getGlobalBounds().width / 2, 300);
+		window.getSize().x / 4.3 - play_text.getGlobalBounds().width / 2, 180);
 
 	// quit text in menu
 	quit_text.setFont(play_font);
@@ -140,7 +167,7 @@ void Game::menuTexts()
 	quit_text.setOutlineColor(sf::Color::Black);
 	quit_text.setOutlineThickness(2);
 	quit_text.setPosition(
-		window.getSize().x / 4.3 - quit_text.getGlobalBounds().width / 2, 400);
+		window.getSize().x / 4.3 - quit_text.getGlobalBounds().width / 2, 270);
 
 	////white border in menu
 	//box.setSize(sf::Vector2f(1073, 712));
