@@ -27,8 +27,10 @@ bool Game::init()
 	character = new sf::Sprite;
 	passport = new sf::Sprite;
 
+
 	if (in_menu)
 	{
+
 		in_menu = true;
 
 	    menuTexts();
@@ -43,26 +45,41 @@ bool Game::init()
 
 void Game::update(float dt)
 {
+
 	if (is_running == true)
 	{
+
 		if (!in_menu)
 		{
+
 			renderGame();
+			newAnimal();
+
 		}
+
 	}
+
 }
 
 void Game::render()
 {
+
 	if (in_menu)
 	{
+
 		renderMenu();
+
 	}
 
 	else
 	{
+
 		renderGame();
+		renderAnimals();
+		renderPassports();
+
 	}
+
 
 }
 
@@ -85,6 +102,7 @@ void Game::keyPressed(sf::Event event)
 			toggleMenuSelection();
 
 		}
+
 		else if (event.key.code == sf::Keyboard::Enter)
 		{
 
@@ -106,8 +124,10 @@ void Game::keyReleased(sf::Event event)
 
 // - - - - - - - - - - - - - Rendering - - - - - - - - - - - - - - -
 
+
 void Game::renderMenu()
 {
+
 	//menu texture
 	if (!menu_background_texture.loadFromFile("../Data/Images/Stock_Images/Menu_back.jpeg"))
 	{
@@ -115,8 +135,8 @@ void Game::renderMenu()
 	}
 
 	menu_background.setTexture(menu_background_texture);
-	menu_background.setScale(.15, .15);
-	menu_background.setPosition(130, 310);
+	menu_background.setScale(.14, .14);
+	menu_background.setPosition(165, 330);
 
 	window.draw(menu_background);
 	window.draw(menu_text);
@@ -129,27 +149,7 @@ void Game::renderMenu()
 
 void Game::renderGame()
 {
-	/*if (!officer_white_texture.loadFromFile("../Data/Images/Stock_Images/OfficersWhite.jpeg"))
-	{
-		std::cout << "background texture did not load \n";
-	}
-
-	if (!officer_black_texture.loadFromFile("../Data/Images/Stock_Images/OfficersBlack.jpeg"))
-	{
-		std::cout << "background texture did not load \n";
-	}
-
-	officer_white.setTexture(officer_white_texture);
-	officer_white.setScale(.15, .15);
-	officer_white.setPosition(130, 310);
-
-	window.draw(officer_white);
-
-	officer_black.setTexture(officer_black_texture);
-	officer_black.setScale(.15, .15);
-	officer_black.setPosition(130, 310);
-
-	window.draw(officer_black);*/
+	
 
 	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/GameBackground.png"))
 	{
@@ -157,8 +157,8 @@ void Game::renderGame()
 	}
 
 	game_background.setTexture(game_background_texture);
-	game_background.setScale(.15, .15);
-	game_background.setPosition(125, 20);
+	game_background.setScale(.13, .13);
+	game_background.setPosition(165, 0);
 	window.draw(game_background);
 
 	if (!stop_font.loadFromFile("../Data/Fonts/STOP.ttf"))
@@ -170,10 +170,98 @@ void Game::renderGame()
 	stop_text.setString("STOP!");
 	stop_text.setCharacterSize(50);
 	stop_text.setFillColor(sf::Color::Red);
-	stop_text.setPosition(380, 65);
-
+	stop_text.setPosition(375, 35);
 	window.draw(stop_text);
+
+	box.setSize(sf::Vector2f(870, 300));
+	box.setPosition(100, 380);
+	box.setOutlineColor(sf::Color::Black);
+	box.setOutlineThickness(1);
+	window.draw(box);
+
+	/*box2.setSize(sf::Vector2f(300, 300));
+	box2.setPosition(700, 380);
+	box2.setOutlineColor(sf::Color::Black);
+	box2.setOutlineThickness(1);
+	window.draw(box2);*/
 }
+
+void Game::renderAnimals()
+{
+
+	if (!animals->loadFromFile("../Data/Images/Critter_Crossing/elephant.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!animals->loadFromFile("../Data/Images/Critter_Crossing/moose.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!animals->loadFromFile("../Data/Images/Critter_Crossing/penguin.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	
+	
+}
+
+void Game::renderPassports()
+{
+
+	if (!passports->loadFromFile("..\Data\Images\Critter_Crossing\elephant passport.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!passports->loadFromFile("..\Data\Images\Critter_Crossing\moose passport.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!passports->loadFromFile("..\Data\Images\Critter_Crossing\penguin passport.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+}
+
+void Game::renderNewAnimal()
+{
+
+	passport_accepted = false;
+	passport_rejected = false;
+
+	int animal_index = rand() % 3;
+	int passport_index = rand() % 3;
+
+	if (animal_index == passport_index)
+	{
+
+		should_accept = true;
+
+	}
+	else
+	{
+
+		should_accept = false;
+
+	}
+
+	character->setTexture(animals[animal_index], true);
+	character->setScale(1.8, 1.8);
+	character->setPosition(window.getSize().x / 12, window.getSize().y / 12);
+
+	passport->setTexture(passports[passport_index], true);
+	passport->setScale(0.6, 0.6);
+	passport->setPosition(window.getSize().x / 2, window.getSize().y / 3);
+
+	
+
+}
+
 
 // - - - - - - - - - - - - - Menu / Game UI - - - - - - - - - - - - -
 
@@ -201,7 +289,7 @@ void Game::menuTexts()
 	menu_text.setOutlineColor(sf::Color::White);
 	menu_text.setOutlineThickness(3);
 	menu_text.setPosition(
-		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 10);
+		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 30);
 
 	// play text in menu
 	play_text.setFont(play_font);
@@ -212,7 +300,7 @@ void Game::menuTexts()
 	play_text.setOutlineColor(sf::Color::White);
 	play_text.setOutlineThickness(2);
 	play_text.setPosition(
-		window.getSize().x / 4.5 - play_text.getGlobalBounds().width / 2, 170);
+		window.getSize().x / 4.5 - play_text.getGlobalBounds().width / 2, 190);
 
 	// quit text in menu
 	quit_text.setFont(play_font);
@@ -223,7 +311,7 @@ void Game::menuTexts()
 	quit_text.setOutlineColor(sf::Color::Black);
 	quit_text.setOutlineThickness(2);
 	quit_text.setPosition(
-		window.getSize().x / 4.5 - quit_text.getGlobalBounds().width / 2, 285);
+		window.getSize().x / 4.5 - quit_text.getGlobalBounds().width / 2, 305);
 
 
 }

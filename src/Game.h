@@ -47,18 +47,27 @@ class Game
 
   sf::Sprite officer_black;
   sf::Texture officer_black_texture;
+  
+  sf::RectangleShape box;
+  sf::RectangleShape box2;
 
 
   bool in_menu = true;
   bool play_selected = true;
   bool is_running = true;
+  bool passport_accepted = true;
+  bool passport_rejected = true;
+  bool should_accept = false;
+
 
   void menuTexts();
   void renderMenu();
   void toggleMenuSelection();
   void handleMenuSelection();
   void renderGame();
-
+  void renderAnimals();
+  void renderPassports();
+  void newAnimal();
 
 
 };
