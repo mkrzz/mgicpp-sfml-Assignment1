@@ -29,7 +29,7 @@ bool Game::init()
 	initialiseSprites();
 	initialiseAnimals();
 	initialisePassports();
-	/*newAnimal();*/
+	newAnimal();
 	
     return true;
 
@@ -138,7 +138,7 @@ void Game::renderWorld()
 {
 	
 
-	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/Background_.png"))
+	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/GameBackground.png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
@@ -302,17 +302,17 @@ void Game::initialiseSprites()
 void Game::initialiseAnimals()
 {
 
-	if (!animals[0].loadFromFile("../Data/Images/Critter_Crossing/elephant.png"))
+	if (!animals[0].loadFromFile("../Data/Images/Animal_set/Cow.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!animals[1].loadFromFile("../Data/Images/Critter_Crossing/moose.png"))
+	if (!animals[1].loadFromFile("../Data/Images/Animal_set/Panda.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!animals[2].loadFromFile("../Data/Images/Critter_Crossing/penguin.png"))
+	if (!animals[2].loadFromFile("../Data/Images/Animal_set/Seal.png"))
 	{
 		std::cout << "image did not load";
 	}
@@ -368,8 +368,8 @@ void Game::newAnimal()
 	}
 
 	character->setTexture(animals[animal_index], true);
-	character->setScale(1.8, 1.8);
-	character->setPosition(window.getSize().x / 12, window.getSize().y / 12);
+	character->setScale(.33, .33);
+	character->setPosition(window.getSize().x / 10 + 35, window.getSize().y / 11 + 40);
 
 	passport->setTexture(passports[passport_index]);
 	passport->setScale(0.6, 0.6);
