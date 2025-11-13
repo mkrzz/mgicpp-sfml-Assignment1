@@ -21,24 +21,16 @@ Game::~Game()
 
 bool Game::init()
 {
+
+	in_menu = true;
 	
+	menuTexts();
+	renderMenu();
+	initialiseSprites();
+	initialiseAnimals();
+	initialisePassports();
+	newAnimal();
 	
-
-	character = new sf::Sprite;
-	passport = new sf::Sprite;
-
-
-	if (in_menu)
-	{
-
-		in_menu = true;
-
-	    menuTexts();
-		renderMenu();
-
-	}
-	
-
     return true;
 
 }
@@ -49,14 +41,8 @@ void Game::update(float dt)
 	if (is_running == true)
 	{
 
-		if (!in_menu)
-		{
-
-			renderGame();
-			newAnimal();
-
-		}
-
+		
+		
 	}
 
 }
@@ -68,16 +54,17 @@ void Game::render()
 	{
 
 		renderMenu();
-
+		
+		
 	}
 
-	else
+	else if (is_running)
 	{
 
-		renderGame();
-		renderAnimals();
-		renderPassports();
-
+		renderWorld();
+		renderSprites();
+		
+		
 	}
 
 
@@ -147,7 +134,7 @@ void Game::renderMenu()
 
 }
 
-void Game::renderGame()
+void Game::renderWorld()
 {
 	
 
@@ -186,49 +173,7 @@ void Game::renderGame()
 	window.draw(box2);*/
 }
 
-void Game::renderAnimals()
-{
-
-	if (!animals->loadFromFile("../Data/Images/Critter_Crossing/elephant.png"))
-	{
-		std::cout << "image did not load";
-	}
-
-	if (!animals->loadFromFile("../Data/Images/Critter_Crossing/moose.png"))
-	{
-		std::cout << "image did not load";
-	}
-
-	if (!animals->loadFromFile("../Data/Images/Critter_Crossing/penguin.png"))
-	{
-		std::cout << "image did not load";
-	}
-
-	
-	
-}
-
-void Game::renderPassports()
-{
-
-	if (!passports->loadFromFile("..\Data\Images\Critter_Crossing\elephant passport.png"))
-	{
-		std::cout << "image did not load";
-	}
-
-	if (!passports->loadFromFile("..\Data\Images\Critter_Crossing\moose passport.png"))
-	{
-		std::cout << "image did not load";
-	}
-
-	if (!passports->loadFromFile("..\Data\Images\Critter_Crossing\penguin passport.png"))
-	{
-		std::cout << "image did not load";
-	}
-
-}
-
-void Game::renderNewAnimal()
+void Game::newAnimal()
 {
 
 	passport_accepted = false;
@@ -254,7 +199,7 @@ void Game::renderNewAnimal()
 	character->setScale(1.8, 1.8);
 	character->setPosition(window.getSize().x / 12, window.getSize().y / 12);
 
-	passport->setTexture(passports[passport_index], true);
+	passport->setTexture(passports[passport_index]);
 	passport->setScale(0.6, 0.6);
 	passport->setPosition(window.getSize().x / 2, window.getSize().y / 3);
 
@@ -263,7 +208,9 @@ void Game::renderNewAnimal()
 }
 
 
+
 // - - - - - - - - - - - - - Menu / Game UI - - - - - - - - - - - - -
+
 
 void Game::menuTexts()
 {
@@ -368,3 +315,65 @@ void Game::handleMenuSelection()
 }
 
 
+// - - - - - - - - - - - - - Initialise - - - - - - - - - - - - -
+
+
+void Game::initialiseSprites()
+{
+
+	character = new sf::Sprite;
+	passport = new sf::Sprite;
+
+}
+
+void Game::renderSprites()
+{
+
+	window.draw(*character);
+	window.draw(*passport);
+
+}
+
+
+void Game::initialiseAnimals()
+{
+
+	if (!animals[0].loadFromFile("../Data/Images/Critter_Crossing/elephant.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!animals[1].loadFromFile("../Data/Images/Critter_Crossing/moose.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!animals[2].loadFromFile("../Data/Images/Critter_Crossing/penguin.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	
+
+}
+
+void Game::initialisePassports()
+{
+
+	if (!passports[0].loadFromFile("../Data/Images/Critter_Crossing/elephant passport.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!passports[1].loadFromFile("../Data/Images/Critter_Crossing/moose passport.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!passports[2].loadFromFile("../Data/Images/Critter_Crossing/penguin passport.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	
+}

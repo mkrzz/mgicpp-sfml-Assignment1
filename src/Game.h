@@ -41,12 +41,6 @@ class Game
 
   sf::Sprite game_background;
   sf::Texture game_background_texture;
-
-  sf::Sprite officer_white;
-  sf::Texture officer_white_texture;
-
-  sf::Sprite officer_black;
-  sf::Texture officer_black_texture;
   
   sf::RectangleShape box;
   sf::RectangleShape box2;
@@ -64,10 +58,12 @@ class Game
   void renderMenu();
   void toggleMenuSelection();
   void handleMenuSelection();
-  void renderGame();
-  void renderAnimals();
-  void renderPassports();
+  void renderWorld();
+  void initialiseAnimals();
+  void initialisePassports();
   void newAnimal();
+  void initialiseSprites();
+  void renderSprites();
 
 
 };
