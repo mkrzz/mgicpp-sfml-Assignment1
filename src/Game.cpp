@@ -29,7 +29,7 @@ bool Game::init()
 	initialiseSprites();
 	initialiseAnimals();
 	initialisePassports();
-	newAnimal();
+	/*newAnimal();*/
 	
     return true;
 
@@ -138,14 +138,14 @@ void Game::renderWorld()
 {
 	
 
-	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/GameBackground.png"))
+	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/Background_.png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
 
 	game_background.setTexture(game_background_texture);
-	game_background.setScale(.13, .13);
-	game_background.setPosition(165, 0);
+	game_background.setScale(1, 1);
+	game_background.setPosition(1, 1);
 	window.draw(game_background);
 
 	if (!stop_font.loadFromFile("../Data/Fonts/STOP.ttf"))
@@ -153,18 +153,18 @@ void Game::renderWorld()
 		std::cout << "Font did not load";
 	}
 
-	stop_text.setFont(stop_font);
+	/*stop_text.setFont(stop_font);
 	stop_text.setString("STOP!");
 	stop_text.setCharacterSize(50);
 	stop_text.setFillColor(sf::Color::Red);
 	stop_text.setPosition(375, 35);
-	window.draw(stop_text);
+	window.draw(stop_text);*/
 
-	box.setSize(sf::Vector2f(870, 300));
+	/*box.setSize(sf::Vector2f(870, 300));
 	box.setPosition(100, 380);
 	box.setOutlineColor(sf::Color::Black);
 	box.setOutlineThickness(1);
-	window.draw(box);
+	window.draw(box);*/
 
 	/*box2.setSize(sf::Vector2f(300, 300));
 	box2.setPosition(700, 380);
@@ -173,40 +173,13 @@ void Game::renderWorld()
 	window.draw(box2);*/
 }
 
-void Game::newAnimal()
+void Game::renderSprites()
 {
 
-	passport_accepted = false;
-	passport_rejected = false;
-
-	int animal_index = rand() % 3;
-	int passport_index = rand() % 3;
-
-	if (animal_index == passport_index)
-	{
-
-		should_accept = true;
-
-	}
-	else
-	{
-
-		should_accept = false;
-
-	}
-
-	character->setTexture(animals[animal_index], true);
-	character->setScale(1.8, 1.8);
-	character->setPosition(window.getSize().x / 12, window.getSize().y / 12);
-
-	passport->setTexture(passports[passport_index]);
-	passport->setScale(0.6, 0.6);
-	passport->setPosition(window.getSize().x / 2, window.getSize().y / 3);
-
-	
+	window.draw(*character);
+	window.draw(*passport);
 
 }
-
 
 
 // - - - - - - - - - - - - - Menu / Game UI - - - - - - - - - - - - -
@@ -326,15 +299,6 @@ void Game::initialiseSprites()
 
 }
 
-void Game::renderSprites()
-{
-
-	window.draw(*character);
-	window.draw(*passport);
-
-}
-
-
 void Game::initialiseAnimals()
 {
 
@@ -376,4 +340,41 @@ void Game::initialisePassports()
 	}
 
 	
+}
+
+
+// - - - - - - - - - - - - - Spawn new animal - - - - - - - - - - - - -
+
+void Game::newAnimal()
+{
+
+	passport_accepted = false;
+	passport_rejected = false;
+
+	int animal_index = rand() % 3;
+	int passport_index = rand() % 3;
+
+	if (animal_index == passport_index)
+	{
+
+		should_accept = true;
+
+	}
+	else
+	{
+
+		should_accept = false;
+
+	}
+
+	character->setTexture(animals[animal_index], true);
+	character->setScale(1.8, 1.8);
+	character->setPosition(window.getSize().x / 12, window.getSize().y / 12);
+
+	passport->setTexture(passports[passport_index]);
+	passport->setScale(0.6, 0.6);
+	passport->setPosition(window.getSize().x / 2, window.getSize().y / 3);
+
+
+
 }
