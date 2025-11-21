@@ -116,14 +116,17 @@ void Game::renderMenu()
 {
 
 	//menu texture
-	if (!menu_background_texture.loadFromFile("../Data/Images/Stock_Images/Menu_back.jpeg"))
+	if (!menu_background_texture.loadFromFile("../Data/Images/Stock_Images/Ark-p.png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
 
+	
 	menu_background.setTexture(menu_background_texture);
-	menu_background.setScale(.14, .14);
-	menu_background.setPosition(165, 330);
+	menu_background.setScale(.16, .16);
+	menu_background.setPosition(150, 280);
+	
+		
 
 	window.draw(menu_background);
 	window.draw(menu_text);
@@ -144,8 +147,8 @@ void Game::renderWorld()
 	}
 
 	game_background.setTexture(game_background_texture);
-	game_background.setScale(1, 1);
-	game_background.setPosition(1, 1);
+	/*game_background.setScale(0, 0);*/
+	game_background.setPosition(0, 0);
 	window.draw(game_background);
 
 	if (!stop_font.loadFromFile("../Data/Fonts/STOP.ttf"))
@@ -176,8 +179,8 @@ void Game::renderWorld()
 void Game::renderSprites()
 {
 
-	window.draw(*character);
-	window.draw(*passport);
+	/*window.draw(*character);
+	window.draw(*passport);*/
 
 }
 
@@ -202,9 +205,9 @@ void Game::menuTexts()
 
 	// menu title text
 	menu_text.setFont(menu_font);
-	menu_text.setString("Pawder-Patrol");
+	menu_text.setString("A.r.k");
 	menu_text.setCharacterSize(110);
-	/*menu_text.setLetterSpacing(2);*/
+	menu_text.setLetterSpacing(1);
 	menu_text.setFillColor(sf::Color::Black);
 	menu_text.setOutlineColor(sf::Color::White);
 	menu_text.setOutlineThickness(3);
@@ -302,17 +305,17 @@ void Game::initialiseSprites()
 void Game::initialiseAnimals()
 {
 
-	if (!animals[0].loadFromFile("../Data/Images/Animal_set/Cow.png"))
+	if (!animals[0].loadFromFile("../Data/Images/Stock_images/Cow-P.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!animals[1].loadFromFile("../Data/Images/Animal_set/Panda.png"))
+	if (!animals[1].loadFromFile("../Data/Images/Stock_images/Panda-P.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!animals[2].loadFromFile("../Data/Images/Animal_set/Seal.png"))
+	if (!animals[2].loadFromFile("../Data/Images/Stock_images/Seal-P.png"))
 	{
 		std::cout << "image did not load";
 	}
@@ -324,7 +327,7 @@ void Game::initialiseAnimals()
 void Game::initialisePassports()
 {
 
-	if (!passports[0].loadFromFile("../Data/Images/Critter_Crossing/elephant passport.png"))
+	if (!passports[0].loadFromFile("../Data/Images/Stock_images/Cow_passport.png"))
 	{
 		std::cout << "image did not load";
 	}
