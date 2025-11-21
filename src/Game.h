@@ -15,6 +15,8 @@ class Game
   void mouseClicked(sf::Event event);
   void keyPressed(sf::Event event);
   void keyReleased(sf::Event event);
+  void mouseButtonPressed(sf::Event event);
+  void mouseButtonReleased(sf::Event event);
 
  private:
   sf::RenderWindow& window;
@@ -45,6 +47,9 @@ class Game
   sf::RectangleShape box;
   sf::RectangleShape box2;
 
+  sf::Sprite* dragged = nullptr;
+  sf::Vector2f drag_offset;
+
 
   bool in_menu = true;
   bool play_selected = true;
@@ -52,7 +57,7 @@ class Game
   bool passport_accepted = true;
   bool passport_rejected = true;
   bool should_accept = false;
-
+  bool is_dragging = false;
 
   void menuTexts();
   void renderMenu();
@@ -64,6 +69,8 @@ class Game
   void newAnimal();
   void initialiseSprites();
   void renderSprites();
+  void dragSprite(sf::Sprite* sprite);
+ 
 
 
 };

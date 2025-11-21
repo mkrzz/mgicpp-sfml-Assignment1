@@ -41,7 +41,7 @@ void Game::update(float dt)
 	if (is_running == true)
 	{
 
-		
+		dragSprite(dragged);
 		
 	}
 
@@ -103,7 +103,29 @@ void Game::keyPressed(sf::Event event)
 
 void Game::keyReleased(sf::Event event)
 {
+	
+}
 
+void Game::mouseButtonPressed(sf::Event event)
+{
+	if (event.mouseButton.button == sf::Mouse::Left)
+	{
+		sf::Vector2i click = sf::Mouse::getPosition(window);
+		sf::Vector2f clickf = static_cast<sf::Vector2f>(click);
+
+		if (passport->getGlobalBounds().contains(clickf))
+		{
+			dragged = passport;
+			
+		}
+
+		drag_offset = clickf - passport->getPosition();
+	}
+}
+
+void Game::mouseButtonReleased(sf::Event event)
+{
+	dragged = nullptr;
 }
 
 
@@ -149,7 +171,7 @@ void Game::renderWorld()
 	game_background.setTexture(game_background_texture);
 	/*game_background.setScale(0, 0);*/
 	game_background.setPosition(0, 0);
-	window.draw(game_background);
+	/*window.draw(game_background);*/
 
 	if (!stop_font.loadFromFile("../Data/Fonts/STOP.ttf"))
 	{
@@ -179,10 +201,12 @@ void Game::renderWorld()
 void Game::renderSprites()
 {
 
-	/*window.draw(*character);
-	window.draw(*passport);*/
+	window.draw(*character);
+	window.draw(*passport);
 
 }
+
+
 
 
 // - - - - - - - - - - - - - Menu / Game UI - - - - - - - - - - - - -
@@ -380,4 +404,24 @@ void Game::newAnimal()
 
 
 
+}
+
+
+
+void Game::dragSprite(sf::Sprite* sprite)
+{
+	if (sprite != nullptr)
+	{
+		
+		sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
+
+		sf::Vector2f mouse_positionf = static_cast<sf::Vector2f>(mouse_position);
+		
+		sf::Vector2f drag_position = mouse_positionf - drag_offset;
+		
+		sprite->setPosition(drag_position.x, drag_position.y);
+
+		
+		
+	}
 }
