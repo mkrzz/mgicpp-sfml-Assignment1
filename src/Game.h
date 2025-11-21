@@ -50,6 +50,19 @@ class Game
   sf::Sprite* dragged = nullptr;
   sf::Vector2f drag_offset;
 
+  sf::Sprite accept_button;
+  sf::Texture accept_texture;
+
+  sf::Sprite reject_button;
+  sf::Texture reject_texture;
+
+  sf::Sprite accept_stamp;
+  sf::Texture accept_stamp_texture;
+
+  sf::Sprite reject_stamp;
+  sf::Texture reject_stamp_texture;
+
+
 
   bool in_menu = true;
   bool play_selected = true;
@@ -70,6 +83,8 @@ class Game
   void initialiseSprites();
   void renderSprites();
   void dragSprite(sf::Sprite* sprite);
+  void initialiseButtons();
+  void initialiseStamps();
  
 
 

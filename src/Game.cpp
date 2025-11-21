@@ -28,6 +28,8 @@ bool Game::init()
 	renderMenu();
 	initialiseSprites();
 	initialiseAnimals();
+	initialiseButtons();
+	initialiseStamps();
 	initialisePassports();
 	newAnimal();
 	
@@ -369,6 +371,37 @@ void Game::initialisePassports()
 	
 }
 
+void Game::initialiseButtons()
+{
+
+	if (!accept_texture.loadFromFile("../Data/Images/Critter_Crossing/accept button.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!reject_texture.loadFromFile("../Data/Images/Critter_Crossing/reject button.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+}
+
+void Game::initialiseStamps()
+{
+
+	if (!accept_stamp_texture.loadFromFile("../Data/Images/Critter_Crossing/accept.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!reject_stamp_texture.loadFromFile("../Data/Images/Critter_Crossing/reject.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+}
+
+
 
 // - - - - - - - - - - - - - Spawn new animal - - - - - - - - - - - - -
 
@@ -410,18 +443,18 @@ void Game::newAnimal()
 
 void Game::dragSprite(sf::Sprite* sprite)
 {
+
 	if (sprite != nullptr)
 	{
-		
+
 		sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
 
 		sf::Vector2f mouse_positionf = static_cast<sf::Vector2f>(mouse_position);
-		
+
 		sf::Vector2f drag_position = mouse_positionf - drag_offset;
-		
+
 		sprite->setPosition(drag_position.x, drag_position.y);
 
-		
-		
 	}
 }
+
