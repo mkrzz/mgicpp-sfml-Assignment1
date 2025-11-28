@@ -88,6 +88,8 @@ class Game
   void initialiseButtons();
   void initialiseStamps();
   void renderButtons();
+  void renderAcceptedStamp();
+  void renderRejectedStamp();
 
 
 };
