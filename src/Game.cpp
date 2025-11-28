@@ -100,7 +100,6 @@ void Game::keyPressed(sf::Event event)
 
 			handleMenuSelection();
 			
-
 		}
 
 	}
@@ -128,6 +127,27 @@ void Game::mouseButtonPressed(sf::Event event)
 			
 		}
 
+		if (accept_button.getGlobalBounds().contains(clickf))
+		{
+
+			button_visability = false;
+			passport_accepted = true;
+
+			std::cout << "Passport accepted\n";
+
+		}
+
+		else if (reject_button.getGlobalBounds().contains(clickf))
+		{
+
+			button_visability = false;
+			passport_rejected = true;
+			
+			std::cout << "Passport rejected\n";
+
+		}
+
+
 		drag_offset = clickf - passport->getPosition();
 
 	}
@@ -136,6 +156,8 @@ void Game::mouseButtonPressed(sf::Event event)
 	{
 
 		sf::Vector2f mouse_position(event.mouseButton.x, event.mouseButton.y);
+		sf::Vector2i click = sf::Mouse::getPosition(window);
+		sf::Vector2f clickf = static_cast<sf::Vector2f>(click);
 
 		accept_button.setPosition(mouse_position.x, mouse_position.y);
 		reject_button.setPosition(mouse_position.x, mouse_position.y + accept_button.getGlobalBounds().height + 10);
