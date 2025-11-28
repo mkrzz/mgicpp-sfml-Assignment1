@@ -45,6 +45,7 @@ void Game::update(float dt)
 
 		dragSprite(dragged);
 		
+
 	}
 
 }
@@ -65,7 +66,7 @@ void Game::render()
 
 		renderWorld();
 		renderSprites();
-		
+		renderButtons();
 		
 	}
 
@@ -74,6 +75,7 @@ void Game::render()
 
 void Game::mouseClicked(sf::Event event)
 {
+
   //get the click position
   sf::Vector2i click = sf::Mouse::getPosition(window);
 
@@ -82,6 +84,7 @@ void Game::mouseClicked(sf::Event event)
 
 void Game::keyPressed(sf::Event event)
 {
+
 	if (in_menu)
 	{
 
@@ -101,6 +104,7 @@ void Game::keyPressed(sf::Event event)
 		}
 
 	}
+
 }
 
 void Game::keyReleased(sf::Event event)
@@ -110,24 +114,44 @@ void Game::keyReleased(sf::Event event)
 
 void Game::mouseButtonPressed(sf::Event event)
 {
+
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
+
 		sf::Vector2i click = sf::Mouse::getPosition(window);
 		sf::Vector2f clickf = static_cast<sf::Vector2f>(click);
 
 		if (passport->getGlobalBounds().contains(clickf))
 		{
+
 			dragged = passport;
 			
 		}
 
 		drag_offset = clickf - passport->getPosition();
+
 	}
+
+	if (event.mouseButton.button == sf::Mouse::Right)
+	{
+
+		sf::Vector2f mouse_position(event.mouseButton.x, event.mouseButton.y);
+
+		accept_button.setPosition(mouse_position.x, mouse_position.y);
+		reject_button.setPosition(mouse_position.x, mouse_position.y + accept_button.getGlobalBounds().height + 10);
+		
+		button_visability = true; 
+		
+		
+	}
+
 }
 
 void Game::mouseButtonReleased(sf::Event event)
 {
+
 	dragged = nullptr;
+
 }
 
 
@@ -180,6 +204,7 @@ void Game::renderWorld()
 		std::cout << "Font did not load";
 	}
 
+	
 	/*stop_text.setFont(stop_font);
 	stop_text.setString("STOP!");
 	stop_text.setCharacterSize(50);
@@ -384,6 +409,11 @@ void Game::initialiseButtons()
 		std::cout << "image did not load";
 	}
 
+	accept_button.setTexture(accept_texture);
+	reject_button.setTexture(reject_texture);
+
+
+
 }
 
 void Game::initialiseStamps()
@@ -399,11 +429,29 @@ void Game::initialiseStamps()
 		std::cout << "image did not load";
 	}
 
+	accept_stamp.setTexture(accept_stamp_texture);
+	reject_stamp.setTexture(reject_stamp_texture);
+
+
+
+}
+
+void Game::renderButtons()
+{
+
+	if (button_visability)
+	{
+		window.draw(accept_button);
+		window.draw(reject_button);
+
+	}
+
 }
 
 
 
 // - - - - - - - - - - - - - Spawn new animal - - - - - - - - - - - - -
+
 
 void Game::newAnimal()
 {

@@ -71,6 +71,8 @@ class Game
   bool passport_rejected = true;
   bool should_accept = false;
   bool is_dragging = false;
+  bool button_visability = false;
+
 
   void menuTexts();
   void renderMenu();
@@ -85,7 +87,7 @@ class Game
   void dragSprite(sf::Sprite* sprite);
   void initialiseButtons();
   void initialiseStamps();
- 
+  void renderButtons();
 
 
 };
