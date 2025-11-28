@@ -116,12 +116,15 @@ void Game::keyReleased(sf::Event event)
 void Game::mouseButtonPressed(sf::Event event)
 {
 
+	
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
-
+		
 		sf::Vector2f mouse_position(event.mouseButton.x, event.mouseButton.y);
 		sf::Vector2i click = sf::Mouse::getPosition(window);
 		sf::Vector2f clickf = static_cast<sf::Vector2f>(click);
+
+		
 
 		if (passport->getGlobalBounds().contains(clickf))
 		{
@@ -130,36 +133,39 @@ void Game::mouseButtonPressed(sf::Event event)
 			
 		}
 
-		if (accept_button.getGlobalBounds().contains(clickf))
+		if (button_visability)
 		{
 
-			std::cout << "Passport accepted\n";
+			if (accept_button.getGlobalBounds().contains(clickf))
+			{
 
-			button_visability = false;
-			passport_accepted = true;
+				std::cout << "Passport accepted\n";
 
-			renderAcceptedStamp();
+				button_visability = false;
+				passport_accepted = true;
 
-			// sets stamp to same position as button
-			accept_stamp.setPosition(accept_button.getPosition());
+				renderAcceptedStamp();
+
+				// sets stamp to same position as button
+				accept_stamp.setPosition(accept_button.getPosition());
 			
 
-		}
+			}
 
-		else if (reject_button.getGlobalBounds().contains(clickf))
-		{
+			else if (reject_button.getGlobalBounds().contains(clickf))
+			{
 
-			std::cout << "Passport rejected\n";
+				std::cout << "Passport rejected\n";
 
-			button_visability = false;
-			passport_rejected = true;
+				button_visability = false;
+				passport_rejected = true;
 			
-			renderRejectedStamp();
+				renderRejectedStamp();
 
-			reject_stamp.setPosition(reject_button.getPosition());
+				reject_stamp.setPosition(reject_button.getPosition());
 
+			}
 		}
-
 
 		drag_offset = clickf - passport->getPosition();
 
