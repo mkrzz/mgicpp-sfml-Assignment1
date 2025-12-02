@@ -64,6 +64,11 @@ class Game
 
   sf::Vector2f stamp_offset;
 
+  sf::Sprite lives;
+  sf::Texture lives_texture;
+
+  int player_lives = 3;
+
 
   bool in_menu = true;
   bool play_selected = true;
@@ -90,7 +95,7 @@ class Game
   void initialiseStamps();
   void renderButtons();
   void renderStamps();
-  
+  void playerLives();
 
 
 };

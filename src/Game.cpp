@@ -206,7 +206,9 @@ void Game::mouseButtonReleased(sf::Event event)
 	{
 		dragged = nullptr;
 		
-		if (passport->getGlobalBounds().intersects(character->getGlobalBounds()))
+		// collision detection between passport and animal, spawns new animal when detected 
+		// added check to make sure passport has been stamped before accepting/rejecting
+		if (stamp_pressed && passport->getGlobalBounds().intersects(character->getGlobalBounds()))
 		{
 			std::cout << "Delivered\n";
 
@@ -271,7 +273,8 @@ void Game::renderWorld()
 		std::cout << "Font did not load";
 	}
 
-	
+	playerLives();
+
 	/*stop_text.setFont(stop_font);
 	stop_text.setString("STOP!");
 	stop_text.setCharacterSize(50);
@@ -536,6 +539,7 @@ void Game::renderStamps()
 
 
 
+
 // - - - - - - - - - - - - - Spawn new animal - - - - - - - - - - - - -
 
 
@@ -600,3 +604,25 @@ void Game::dragSprite(sf::Sprite* sprite)
 	}
 }
 
+
+void Game::playerLives()
+{
+
+	if (!lives_texture.loadFromFile("../Data/Images/Lives/Wheel_lives.png"))
+	{
+
+		std::cout << "Texture did not load";
+
+	}
+
+	for (int i = 0; i < player_lives; ++i)
+	{
+			
+		lives.setTexture(lives_texture);
+		lives.setScale(0.025f, 0.025f);
+		lives.setPosition(10 + i * 70, 10);
+		window.draw(lives);
+
+	}
+
+}
