@@ -24,13 +24,13 @@ class Game
   sf::Font menu_font;
   sf::Font play_font;
   sf::Font quit_font;
+  sf::Font main_game_font;
 
   sf::Text menu_text;
   sf::Text play_text;
   sf::Text quit_text;
+  sf::Text main_game_text;
 
-  sf::Font stop_font;
-  sf::Text stop_text;
 
   sf::Sprite* character;
   sf::Sprite* passport;
@@ -43,9 +43,6 @@ class Game
 
   sf::Sprite game_background;
   sf::Texture game_background_texture;
-  
-  sf::RectangleShape box;
-  sf::RectangleShape box2;
 
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
@@ -84,7 +81,7 @@ class Game
   bool button_visability = false;
   bool stamp_pressed = false;
   bool wrong_name = false;
- /* bool player_accepted = passport_accepted;*/
+ 
 
   void menuTexts();
   void renderMenu();
@@ -104,6 +101,10 @@ class Game
   void playerLives();
   void initialiseFloodGauge();
   void floodTimer(float dt);
+  void passportApprovedText();
+  void passportDeniedText();
+  void rejectedValidPassportText();
+  void passportDidNotMatchText();
   
 
 

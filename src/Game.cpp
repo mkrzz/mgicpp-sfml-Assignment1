@@ -71,6 +71,7 @@ void Game::render()
 		renderStamps();
 
 		window.draw(flood_gauge);
+		window.draw(main_game_text);
 		
 	}
 
@@ -155,6 +156,7 @@ void Game::mouseButtonPressed(sf::Event event)
 
 				stamp_offset = accept_stamp.getPosition() - passport->getPosition();
 				
+				
 			
 
 			}
@@ -190,9 +192,10 @@ void Game::mouseButtonPressed(sf::Event event)
 		sf::Vector2i click = sf::Mouse::getPosition(window);
 		sf::Vector2f clickf = static_cast<sf::Vector2f>(click);
 
-		accept_button.setPosition(mouse_position.x - accept_button.getGlobalBounds().width,
+		// position of stamps relative to mouse position
+		accept_button.setPosition(mouse_position.x - 20 - accept_button.getGlobalBounds().width,
 			mouse_position.y - accept_button.getGlobalBounds().height / 2);
-		reject_button.setPosition(mouse_position.x, mouse_position.y - reject_button.getGlobalBounds().height / 2);
+		reject_button.setPosition(mouse_position.x + 20, mouse_position.y - reject_button.getGlobalBounds().height / 2);
 		
 		button_visability = true; 
 		
@@ -225,12 +228,14 @@ void Game::mouseButtonReleased(sf::Event event)
 				if (should_accept)
 				{
 
+					passportApprovedText();
 					std::cout << "PASSPORT APPROVED - You may board the Ark\n";
 
 				}
 				else
 				{
 
+					passportDidNotMatchText();
 					std::cout << "VIOLATION - Passport did not match!\n";
 
 				}
@@ -242,12 +247,14 @@ void Game::mouseButtonReleased(sf::Event event)
 				if (!should_accept)
 				{
 
+					passportDeniedText();
 					std::cout << "PASSPORT DENIED\n";
 
 				}
 				else
 				{
 
+					rejectedValidPassportText();
 					std::cout << "VIOLATION - You rejected a valid passport\n";
 
 				}
@@ -322,10 +329,7 @@ void Game::renderWorld()
 	game_background.setPosition(0.f, 0.f);
 	window.draw(game_background);
 
-	if (!stop_font.loadFromFile("../Data/Fonts/STOP.ttf"))
-	{
-		std::cout << "Font did not load";
-	}
+
 
 	/*playerLives();*/
 
@@ -737,4 +741,55 @@ void Game::floodTimer(float dt)
 	flood_gauge.setSize(sf::Vector2f(1000.f * percent, 100.f));
 
 
+}
+
+
+
+
+void Game::passportApprovedText()
+{
+
+	if (!main_game_font.loadFromFile("../Data/Fonts/Impact.ttf"))
+	{
+		std::cout << "Font did not load";
+	}
+
+	main_game_text.setFont(main_game_font);
+	main_game_text.setString("PASSPORT APPROVED - You may board the Ark\n");
+	main_game_text.setCharacterSize(50);
+	main_game_text.setPosition(window.getSize().x / 2 - main_game_text.getGlobalBounds().width / 2, 20);
+	main_game_text.setFillColor(sf::Color::Black);
+
+	
+}
+
+void Game::passportDeniedText()
+{
+	main_game_text.setFont(main_game_font);
+	main_game_text.setString("PASSPORT DENIED!\n");
+	main_game_text.setCharacterSize(50);
+	main_game_text.setPosition(window.getSize().x / 2 - main_game_text.getGlobalBounds().width / 2, 20);
+	main_game_text.setFillColor(sf::Color::Black);
+	
+}
+
+void Game::rejectedValidPassportText()
+{
+	main_game_text.setFont(main_game_font);
+	main_game_text.setString("VIOLATION - You rejected a valid passport\n\n");
+	main_game_text.setCharacterSize(50);
+	main_game_text.setPosition(window.getSize().x / 2 - main_game_text.getGlobalBounds().width / 2, 20);
+	main_game_text.setFillColor(sf::Color::Black);
+	
+}
+
+void Game::passportDidNotMatchText()
+{
+
+	main_game_text.setFont(main_game_font);
+	main_game_text.setString("VIOLATION - Passport did not match!\n");
+	main_game_text.setCharacterSize(50);
+	main_game_text.setPosition(window.getSize().x / 2 - main_game_text.getGlobalBounds().width / 2, 20);
+	main_game_text.setFillColor(sf::Color::Black);
+	
 }
