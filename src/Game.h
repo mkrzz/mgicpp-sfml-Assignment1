@@ -46,6 +46,7 @@ class Game
   
   sf::RectangleShape box;
   sf::RectangleShape box2;
+
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
   float flood_max_timer = 30.0f;
@@ -82,6 +83,7 @@ class Game
   bool is_dragging = false;
   bool button_visability = false;
   bool stamp_pressed = false;
+  bool wrong_name = false;
  /* bool player_accepted = passport_accepted;*/
 
   void menuTexts();
@@ -101,7 +103,8 @@ class Game
   void renderStamps();
   void playerLives();
   void initialiseFloodGauge();
-
+  void floodTimer(float dt);
+  
 
 
 };

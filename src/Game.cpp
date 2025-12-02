@@ -45,16 +45,8 @@ void Game::update(float dt)
 	{
 
 		dragSprite(dragged);
+		floodTimer(dt);
 
-		flood_timer += dt;
-
-		if (flood_timer > flood_max_timer)
-		{
-			flood_timer = flood_max_timer;
-		}
-
-		float percent = flood_timer / flood_max_timer;
-		flood_gauge.setSize(sf::Vector2f(200.f * percent, 25.f));
 	}
 
 }
@@ -77,6 +69,7 @@ void Game::render()
 		renderSprites();
 		renderButtons();
 		renderStamps();
+
 		window.draw(flood_gauge);
 		
 	}
@@ -256,9 +249,19 @@ void Game::mouseButtonReleased(sf::Event event)
 					std::cout << "VIOLATION - You rejected a valid passport\n";
 
 				}
+			
 
 			}
-			
+
+			if (wrong_name)
+			{
+				
+				{
+					std::cout << "VIOLATION - Wrong name on Passport\n";
+				}
+				
+				
+			}
 
 
 			stamp_pressed = false;
@@ -307,15 +310,15 @@ void Game::renderWorld()
 {
 	
 
-	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/GameBackground.png"))
+	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/Artboard 1.png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
 
 	game_background.setTexture(game_background_texture);
-	/*game_background.setScale(0, 0);*/
-	game_background.setPosition(0, 0);
-	/*window.draw(game_background);*/
+	game_background.setScale(1.f, 1.f);
+	game_background.setPosition(0.f, 0.f);
+	window.draw(game_background);
 
 	if (!stop_font.loadFromFile("../Data/Fonts/STOP.ttf"))
 	{
@@ -349,6 +352,33 @@ void Game::renderSprites()
 
 	window.draw(*character);
 	window.draw(*passport);
+
+}
+
+void Game::renderButtons()
+{
+
+	if (button_visability)
+	{
+		window.draw(accept_button);
+		window.draw(reject_button);
+
+	}
+
+}
+
+void Game::renderStamps()
+{
+
+
+	if (passport_accepted)
+	{
+		window.draw(accept_stamp);
+	}
+	else if (passport_rejected)
+	{
+		window.draw(reject_stamp);
+	}
 
 }
 
@@ -497,17 +527,17 @@ void Game::initialiseAnimals()
 void Game::initialisePassports()
 {
 
-	if (!passports[0].loadFromFile("../Data/Images/Animal_set/Bear.png"))
+	if (!passports[0].loadFromFile("../Data/Images/Passports/Bear_Passport.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!passports[1].loadFromFile("../Data/Images/Animal_set/Frog.png"))
+	if (!passports[1].loadFromFile("../Data/Images/Passports/Frog_Passport.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!passports[2].loadFromFile("../Data/Images/Animal_set/Pig.png"))
+	if (!passports[2].loadFromFile("../Data/Images/Passports/Pig_Passport.png"))
 	{
 		std::cout << "image did not load";
 	}
@@ -557,33 +587,12 @@ void Game::initialiseStamps()
 
 }
 
-void Game::renderButtons()
+void Game::initialiseFloodGauge()
 {
-
-	if (button_visability)
-	{
-		window.draw(accept_button);
-		window.draw(reject_button);
-
-	}
-
+	flood_gauge.setSize(sf::Vector2f(200.f, 25.f));
+	flood_gauge.setFillColor(sf::Color::Blue);
+	flood_gauge.setPosition(20.f, 20.f);
 }
-
-void Game::renderStamps()
-{
-
-
-	if (passport_accepted)
-	{
-		window.draw(accept_stamp);
-	}
-	else if (passport_rejected)
-	{
-		window.draw(reject_stamp);
-	}
-	
-}
-
 
 
 
@@ -608,22 +617,28 @@ void Game::newAnimal()
 
 		should_accept = true;
 		
+		
 	}
 	else
 	{
 
 		should_accept = false;
-	
+		
 	}
+
+	
+
+	
+	
 
 	character->setTexture(animals[animal_index], true);
 	character->setScale(.33, .33);
 	character->setPosition(window.getSize().x / 10 + 35, window.getSize().y / 11 + 40);
 
 	passport->setTexture(passports[passport_index]);
-	passport->setScale(0.6, 0.6);
-	passport->setPosition(window.getSize().x / 2, window.getSize().y / 3);
-
+	passport->setScale(1.f, 1.f);
+	passport->setPosition(window.getSize().x / 2 + 10, window.getSize().y / 3 - 190);
+	
 
 
 }
@@ -677,9 +692,24 @@ void Game::playerLives()
 
 }
 
-void Game::initialiseFloodGauge()
+
+void Game::floodTimer(float dt)
 {
-	flood_gauge.setSize(sf::Vector2f(200.f, 25.f));
-	flood_gauge.setFillColor(sf::Color::Blue);
-	flood_gauge.setPosition(20.f, 20.f);
+	
+	//increases at real time speed
+	flood_timer += dt;
+
+	// set an end clamp to stop the timer
+	if (flood_timer > flood_max_timer)
+	{
+		flood_timer = flood_max_timer;
+	}
+
+	// converts timer to control max percentage of gauge (the bars width)
+	float percent = flood_timer / flood_max_timer;
+
+	// sets max size of gauge
+	flood_gauge.setSize(sf::Vector2f(1000.f * percent, 100.f));
+
+
 }
