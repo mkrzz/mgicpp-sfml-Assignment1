@@ -200,8 +200,24 @@ void Game::mouseButtonPressed(sf::Event event)
 void Game::mouseButtonReleased(sf::Event event)
 {
 
-	dragged = nullptr;
 	button_visability = false;
+
+	if (event.mouseButton.button == sf::Mouse::Left && dragged == passport)
+	{
+		dragged = nullptr;
+		
+		if (passport->getGlobalBounds().intersects(character->getGlobalBounds()))
+		{
+			std::cout << "Delivered\n";
+
+			stamp_pressed = false;
+
+			newAnimal();
+		}
+
+	}
+	
+	
 
 }
 
