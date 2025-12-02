@@ -190,8 +190,9 @@ void Game::mouseButtonPressed(sf::Event event)
 		sf::Vector2i click = sf::Mouse::getPosition(window);
 		sf::Vector2f clickf = static_cast<sf::Vector2f>(click);
 
-		accept_button.setPosition(mouse_position.x, mouse_position.y);
-		reject_button.setPosition(mouse_position.x, mouse_position.y + accept_button.getGlobalBounds().height + 10);
+		accept_button.setPosition(mouse_position.x - accept_button.getGlobalBounds().width,
+			mouse_position.y - accept_button.getGlobalBounds().height / 2);
+		reject_button.setPosition(mouse_position.x, mouse_position.y - reject_button.getGlobalBounds().height / 2);
 		
 		button_visability = true; 
 		
@@ -233,6 +234,7 @@ void Game::mouseButtonReleased(sf::Event event)
 					std::cout << "VIOLATION - Passport did not match!\n";
 
 				}
+
 			}
 			else if (passport_rejected)
 			{
@@ -520,7 +522,16 @@ void Game::initialiseAnimals()
 		std::cout << "image did not load";
 	}
 
+	if (!animals[3].loadFromFile("../Data/Images/Animal_set/Seagul.png"))
+	{
+		std::cout << "image did not load";
+	}
 	
+	if (!animals[4].loadFromFile("../Data/Images/Animal_set/Wolf.png"))
+	{
+		std::cout << "image did not load";
+	}
+
 
 }
 
@@ -542,24 +553,36 @@ void Game::initialisePassports()
 		std::cout << "image did not load";
 	}
 
-	
+	if (!passports[3].loadFromFile("../Data/Images/Passports/Seagul_Passport.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+	if (!passports[4].loadFromFile("../Data/Images/Passports/Wolf_Passport.png"))
+	{
+		std::cout << "image did not load";
+	}
+
+
 }
 
 void Game::initialiseButtons()
 {
 
-	if (!accept_texture.loadFromFile("../Data/Images/Critter_Crossing/accept button.png"))
+	if (!accept_texture.loadFromFile("../Data/Images/Stamps/Approved_button_new.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!reject_texture.loadFromFile("../Data/Images/Critter_Crossing/reject button.png"))
+	if (!reject_texture.loadFromFile("../Data/Images/Stamps/Rejected_button_new.png"))
 	{
 		std::cout << "image did not load";
 	}
 
 	accept_button.setTexture(accept_texture);
 	reject_button.setTexture(reject_texture);
+	accept_button.setScale(.7f, .7f);
+	reject_button.setScale(.7f, .7f);
 
 
 
@@ -568,18 +591,20 @@ void Game::initialiseButtons()
 void Game::initialiseStamps()
 {
 
-	if (!accept_stamp_texture.loadFromFile("../Data/Images/Critter_Crossing/accept.png"))
+	if (!accept_stamp_texture.loadFromFile("../Data/Images/Stamps/Approved_stamp.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!reject_stamp_texture.loadFromFile("../Data/Images/Critter_Crossing/reject.png"))
+	if (!reject_stamp_texture.loadFromFile("../Data/Images/Stamps/Rejected_stamp.png"))
 	{
 		std::cout << "image did not load";
 	}
 
 	accept_stamp.setTexture(accept_stamp_texture);
 	reject_stamp.setTexture(reject_stamp_texture);
+	accept_stamp.setScale(.7f, .7f);
+	reject_stamp.setScale(.7f, .7f);
 
 	
 
@@ -609,8 +634,8 @@ void Game::newAnimal()
 	
 	stamp_pressed = false;
 
-	int animal_index = rand() % 3;
-	int passport_index = rand() % 3;
+	int animal_index = rand() % 5;
+	int passport_index = rand() % 5;
 
 	if (animal_index == passport_index)
 	{

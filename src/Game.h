@@ -35,8 +35,8 @@ class Game
   sf::Sprite* character;
   sf::Sprite* passport;
 
-  sf::Texture* animals = new sf::Texture[3];
-  sf::Texture* passports = new sf::Texture[3];
+  sf::Texture* animals = new sf::Texture[5];
+  sf::Texture* passports = new sf::Texture[5];
 
   sf::Sprite menu_background;
   sf::Texture menu_background_texture;
