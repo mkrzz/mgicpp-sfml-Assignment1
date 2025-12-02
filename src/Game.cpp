@@ -138,12 +138,12 @@ void Game::mouseButtonPressed(sf::Event event)
 			if (accept_button.getGlobalBounds().contains(clickf))
 			{
 
-				std::cout << "Passport accepted\n";
 
 				button_visability = false;
 				passport_accepted = true;
 				passport_rejected = false;
 				stamp_pressed = true;
+				
 
 				renderStamps();
 
@@ -159,12 +159,12 @@ void Game::mouseButtonPressed(sf::Event event)
 			else if (reject_button.getGlobalBounds().contains(clickf))
 			{
 
-				std::cout << "Passport rejected\n";
 
 				button_visability = false;
 				passport_accepted = false;
 				passport_rejected = true;
 				stamp_pressed = true;
+				
 			
 				renderStamps();
 
@@ -210,7 +210,43 @@ void Game::mouseButtonReleased(sf::Event event)
 		// added check to make sure passport has been stamped before accepting/rejecting
 		if (stamp_pressed && passport->getGlobalBounds().intersects(character->getGlobalBounds()))
 		{
-			std::cout << "Delivered\n";
+			
+
+			if (passport_accepted)
+			{
+
+				if (should_accept)
+				{
+
+					std::cout << "PASSPORT APPROVED - You may board the Ark\n";
+
+				}
+				else
+				{
+
+					std::cout << "ENTRY VIOLATION - Passport did not match!\n";
+
+				}
+			}
+			else if (passport_rejected)
+			{
+
+				if (!should_accept)
+				{
+
+					std::cout << "PASSPORT DENIED\n";
+
+				}
+				else
+				{
+
+					std::cout << "ENTRY VIOLATION - You rejected a valid passport\n";
+
+				}
+
+			}
+			
+
 
 			stamp_pressed = false;
 
@@ -426,17 +462,17 @@ void Game::initialiseSprites()
 void Game::initialiseAnimals()
 {
 
-	if (!animals[0].loadFromFile("../Data/Images/Stock_images/Cow-P.png"))
+	if (!animals[0].loadFromFile("../Data/Images/Animal_set/Bear.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!animals[1].loadFromFile("../Data/Images/Stock_images/Panda-P.png"))
+	if (!animals[1].loadFromFile("../Data/Images/Animal_set/Frog.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!animals[2].loadFromFile("../Data/Images/Stock_images/Seal-P.png"))
+	if (!animals[2].loadFromFile("../Data/Images/Animal_set/Pig.png"))
 	{
 		std::cout << "image did not load";
 	}
@@ -448,17 +484,17 @@ void Game::initialiseAnimals()
 void Game::initialisePassports()
 {
 
-	if (!passports[0].loadFromFile("../Data/Images/Stock_images/Cow_passport.png"))
+	if (!passports[0].loadFromFile("../Data/Images/Animal_set/Bear.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!passports[1].loadFromFile("../Data/Images/Critter_Crossing/moose passport.png"))
+	if (!passports[1].loadFromFile("../Data/Images/Animal_set/Frog.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!passports[2].loadFromFile("../Data/Images/Critter_Crossing/penguin passport.png"))
+	if (!passports[2].loadFromFile("../Data/Images/Animal_set/Pig.png"))
 	{
 		std::cout << "image did not load";
 	}
@@ -548,6 +584,7 @@ void Game::newAnimal()
 
 	passport_accepted = false;
 	passport_rejected = false;
+	
 	stamp_pressed = false;
 
 	int animal_index = rand() % 3;
@@ -557,13 +594,13 @@ void Game::newAnimal()
 	{
 
 		should_accept = true;
-
+		
 	}
 	else
 	{
 
 		should_accept = false;
-
+	
 	}
 
 	character->setTexture(animals[animal_index], true);

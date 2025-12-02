@@ -73,12 +73,13 @@ class Game
   bool in_menu = true;
   bool play_selected = true;
   bool is_running = true;
-  bool passport_accepted = true;
-  bool passport_rejected = true;
+  bool passport_accepted = false;
+  bool passport_rejected = false;
   bool should_accept = false;
   bool is_dragging = false;
   bool button_visability = false;
   bool stamp_pressed = false;
+ /* bool player_accepted = passport_accepted;*/
 
   void menuTexts();
   void renderMenu();
