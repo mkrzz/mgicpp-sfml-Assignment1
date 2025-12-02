@@ -67,8 +67,7 @@ void Game::render()
 		renderWorld();
 		renderSprites();
 		renderButtons();
-		renderAcceptedStamp();
-		renderRejectedStamp();
+		renderStamps();
 		
 	}
 
@@ -143,14 +142,16 @@ void Game::mouseButtonPressed(sf::Event event)
 
 				button_visability = false;
 				passport_accepted = true;
+				passport_rejected = false;
+				stamp_pressed = true;
 
-				renderAcceptedStamp();
+				renderStamps();
 
 				// sets stamp to same position as button
 				accept_stamp.setPosition(accept_button.getPosition());
 
 				stamp_offset = accept_stamp.getPosition() - passport->getPosition();
-				stamp_pressed = true;
+				
 			
 
 			}
@@ -161,14 +162,16 @@ void Game::mouseButtonPressed(sf::Event event)
 				std::cout << "Passport rejected\n";
 
 				button_visability = false;
+				passport_accepted = false;
 				passport_rejected = true;
+				stamp_pressed = true;
 			
-				renderRejectedStamp();
+				renderStamps();
 
 				reject_stamp.setPosition(reject_button.getPosition());
 
 				stamp_offset = reject_stamp.getPosition() - passport->getPosition();
-				stamp_pressed = true;
+				
 
 			}
 		}
@@ -498,7 +501,7 @@ void Game::renderButtons()
 
 }
 
-void Game::renderAcceptedStamp()
+void Game::renderStamps()
 {
 
 
@@ -506,18 +509,14 @@ void Game::renderAcceptedStamp()
 	{
 		window.draw(accept_stamp);
 	}
-	
-}
-
-void Game::renderRejectedStamp()
-{
-
-	if (passport_rejected)
+	else if (passport_rejected)
 	{
 		window.draw(reject_stamp);
 	}
-
+	
 }
+
+
 
 
 
@@ -529,6 +528,7 @@ void Game::newAnimal()
 
 	passport_accepted = false;
 	passport_rejected = false;
+	stamp_pressed = false;
 
 	int animal_index = rand() % 3;
 	int passport_index = rand() % 3;
@@ -574,6 +574,7 @@ void Game::dragSprite(sf::Sprite* sprite)
 
 		sprite->setPosition(drag_position.x, drag_position.y);
 
+		// sets the stamp positions relative to the passports when dragging
 		if (sprite == passport && stamp_pressed)
 		{
 			accept_stamp.setPosition(drag_position + stamp_offset);
