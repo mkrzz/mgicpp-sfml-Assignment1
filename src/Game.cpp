@@ -148,6 +148,9 @@ void Game::mouseButtonPressed(sf::Event event)
 
 				// sets stamp to same position as button
 				accept_stamp.setPosition(accept_button.getPosition());
+
+				stamp_offset = accept_stamp.getPosition() - passport->getPosition();
+				stamp_pressed = true;
 			
 
 			}
@@ -163,6 +166,9 @@ void Game::mouseButtonPressed(sf::Event event)
 				renderRejectedStamp();
 
 				reject_stamp.setPosition(reject_button.getPosition());
+
+				stamp_offset = reject_stamp.getPosition() - passport->getPosition();
+				stamp_pressed = true;
 
 			}
 		}
@@ -474,6 +480,8 @@ void Game::initialiseStamps()
 	accept_stamp.setTexture(accept_stamp_texture);
 	reject_stamp.setTexture(reject_stamp_texture);
 
+	
+
 
 
 }
@@ -565,6 +573,12 @@ void Game::dragSprite(sf::Sprite* sprite)
 		sf::Vector2f drag_position = mouse_positionf - drag_offset;
 
 		sprite->setPosition(drag_position.x, drag_position.y);
+
+		if (sprite == passport && stamp_pressed)
+		{
+			accept_stamp.setPosition(drag_position + stamp_offset);
+			reject_stamp.setPosition(drag_position + stamp_offset);
+		}
 
 	}
 }

@@ -62,6 +62,7 @@ class Game
   sf::Sprite reject_stamp;
   sf::Texture reject_stamp_texture;
 
+  sf::Vector2f stamp_offset;
 
 
   bool in_menu = true;
@@ -72,7 +73,7 @@ class Game
   bool should_accept = false;
   bool is_dragging = false;
   bool button_visability = false;
-
+  bool stamp_pressed = false;
 
   void menuTexts();
   void renderMenu();
