@@ -31,6 +31,7 @@ bool Game::init()
 	initialiseButtons();
 	initialiseStamps();
 	initialisePassports();
+	initialiseFloodGauge();
 	newAnimal();
 	
     return true;
@@ -44,8 +45,16 @@ void Game::update(float dt)
 	{
 
 		dragSprite(dragged);
-		
 
+		flood_timer += dt;
+
+		if (flood_timer > flood_max_timer)
+		{
+			flood_timer = flood_max_timer;
+		}
+
+		float percent = flood_timer / flood_max_timer;
+		flood_gauge.setSize(sf::Vector2f(200.f * percent, 25.f));
 	}
 
 }
@@ -68,6 +77,7 @@ void Game::render()
 		renderSprites();
 		renderButtons();
 		renderStamps();
+		window.draw(flood_gauge);
 		
 	}
 
@@ -206,8 +216,11 @@ void Game::mouseButtonReleased(sf::Event event)
 	{
 		dragged = nullptr;
 		
+
 		// collision detection between passport and animal, spawns new animal when detected 
 		// added check to make sure passport has been stamped before accepting/rejecting
+		// nested if statements to display correct text depending on player stamp choice 
+
 		if (stamp_pressed && passport->getGlobalBounds().intersects(character->getGlobalBounds()))
 		{
 			
@@ -224,7 +237,7 @@ void Game::mouseButtonReleased(sf::Event event)
 				else
 				{
 
-					std::cout << "ENTRY VIOLATION - Passport did not match!\n";
+					std::cout << "VIOLATION - Passport did not match!\n";
 
 				}
 			}
@@ -240,7 +253,7 @@ void Game::mouseButtonReleased(sf::Event event)
 				else
 				{
 
-					std::cout << "ENTRY VIOLATION - You rejected a valid passport\n";
+					std::cout << "VIOLATION - You rejected a valid passport\n";
 
 				}
 
@@ -309,7 +322,7 @@ void Game::renderWorld()
 		std::cout << "Font did not load";
 	}
 
-	playerLives();
+	/*playerLives();*/
 
 	/*stop_text.setFont(stop_font);
 	stop_text.setString("STOP!");
@@ -662,4 +675,11 @@ void Game::playerLives()
 
 	}
 
+}
+
+void Game::initialiseFloodGauge()
+{
+	flood_gauge.setSize(sf::Vector2f(200.f, 25.f));
+	flood_gauge.setFillColor(sf::Color::Blue);
+	flood_gauge.setPosition(20.f, 20.f);
 }
