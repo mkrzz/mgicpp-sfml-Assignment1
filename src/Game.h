@@ -50,7 +50,7 @@ class Game
 
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
-  float flood_max_timer = 5.0f;
+  float flood_max_timer = 30.0f;
 
   sf::Sprite* dragged = nullptr;
   sf::Vector2f drag_offset;
@@ -125,7 +125,9 @@ class Game
   void handlePassportTextChoice();
   void initialiseMainGameFont();
   void restartGame();
-  void outOfTimeText();
+  void drawOutOfTimeText();
+  void initialisePlayAgainFont();
+  void initialiseGameScreen();
   
   
   
