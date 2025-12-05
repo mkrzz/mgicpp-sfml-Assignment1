@@ -38,9 +38,9 @@ bool Game::init()
 	initialiseFloodGauge();
 	initialisePlayerLives();
 	initialiseGameScreen();
-	newAnimal();
 	initialiseGameTimer();
 	initialiseOverlay();
+	newAnimal();
 	
 	
 	
@@ -441,6 +441,7 @@ void Game::drawEndOfDay()
 {
 
 	window.draw(overlay);
+	window.draw(overlay_rect);
 	window.draw(end_of_day_text);
 	window.draw(end_of_day_info_text);
 
@@ -707,12 +708,12 @@ void Game::initialiseGameScreen()
 void Game::initialiseGameTimer()
 {
 
-	game_duration = sf::seconds(30);
+	game_duration = sf::seconds(2);
 	timer_text.setFont(dead_font);
 	timer_text.setCharacterSize(50);
 	timer_text.setFillColor(sf::Color::Black);
 	timer_text.setPosition(window.getSize().x - 220, 10);
-	timer_text.setString("Time: 2");
+	/*timer_text.setString("Time: 2");*/
 
 	
 
@@ -785,7 +786,12 @@ void Game::initialiseOverlay()
 	// adds a transparantish overlay when player dies
 	overlay.setSize(sf::Vector2f(window.getSize()));
 	overlay.setFillColor(sf::Color(0, 0, 0, 200));
-
+	overlay_rect.setSize(sf::Vector2f(1300, 800));
+	overlay_rect.setFillColor(sf::Color(0, 0, 0, 100));
+	overlay_rect.setPosition(window.getSize().x / 2 - overlay_rect.getSize().x / 2,
+		window.getSize().y / 2 - overlay_rect.getSize().y / 2
+		);
+	
 }
 
 void Game::initialiseEndOfDayFont()
@@ -956,9 +962,6 @@ void Game::startNewDay()
 
 
 }
-
-
-
 
 
 

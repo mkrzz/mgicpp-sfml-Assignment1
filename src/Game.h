@@ -54,6 +54,7 @@ class Game
   sf::Sprite game_background;
   sf::Texture game_background_texture;
 
+  sf::RectangleShape overlay_rect;
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
   float flood_max_timer = 60.0f * 5;
