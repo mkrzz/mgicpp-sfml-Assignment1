@@ -763,9 +763,14 @@ void Game::floodTimer(float dt)
 
 	// converts timer to control max percentage of gauge (the bars width)
 	float percent = flood_timer / flood_max_timer;
+	float max_height = 400.0f;
+	float current_height = max_height * percent;
 
 	// sets max size of gauge
-	flood_gauge.setSize(sf::Vector2f(1000.f * percent, 100.f));
+	flood_gauge.setSize(sf::Vector2f(100.f, current_height));
+
+	// anchors bar from the bottom so bar rises upwards
+	flood_gauge.setPosition(50, 600 - current_height);	
 
 
 }
