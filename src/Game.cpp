@@ -33,6 +33,7 @@ bool Game::init()
 	initialisePassports();
 	initialiseFloodGauge();
 	newAnimal();
+	playerLives();
 	
     return true;
 
@@ -58,8 +59,20 @@ void Game::render()
 	{
 
 		renderMenu();
-		
-		
+
+
+	}
+
+	else if (has_won)
+	{
+
+
+	}
+
+	else if (is_dead)
+	{
+
+
 	}
 
 	else if (is_running)
@@ -69,6 +82,9 @@ void Game::render()
 		renderSprites();
 		renderButtons();
 		renderStamps();
+		playerLives();
+		deadText();
+		
 
 		window.draw(flood_gauge);
 		window.draw(main_game_text);
@@ -230,6 +246,7 @@ void Game::mouseButtonReleased(sf::Event event)
 
 					passportApprovedText();
 					std::cout << "PASSPORT APPROVED - You may board the Ark\n";
+					passports_approved++;
 
 				}
 				else
@@ -237,6 +254,7 @@ void Game::mouseButtonReleased(sf::Event event)
 
 					passportDidNotMatchText();
 					std::cout << "VIOLATION - Passport did not match!\n";
+					player_lives--;
 
 				}
 
@@ -256,6 +274,7 @@ void Game::mouseButtonReleased(sf::Event event)
 
 					rejectedValidPassportText();
 					std::cout << "VIOLATION - You rejected a valid passport\n";
+					player_lives--;
 
 				}
 			
@@ -702,7 +721,7 @@ void Game::dragSprite(sf::Sprite* sprite)
 void Game::playerLives()
 {
 
-	if (!lives_texture.loadFromFile("../Data/Images/Lives/Wheel_lives.png"))
+	if (!lives_texture.loadFromFile("../Data/Images/Heart.png"))
 	{
 
 		std::cout << "Texture did not load";
@@ -713,8 +732,8 @@ void Game::playerLives()
 	{
 			
 		lives.setTexture(lives_texture);
-		lives.setScale(0.025f, 0.025f);
-		lives.setPosition(10 + i * 70, 10);
+		lives.setScale(1.0f, 1.0f);
+		lives.setPosition(100 + i * 70, 300);
 		window.draw(lives);
 
 	}
@@ -725,6 +744,12 @@ void Game::playerLives()
 void Game::floodTimer(float dt)
 {
 	
+	//stops timer is not active
+	if (!timer_active)
+	{
+		return;
+	}
+
 	//increases at real time speed
 	flood_timer += dt;
 
@@ -744,6 +769,8 @@ void Game::floodTimer(float dt)
 }
 
 
+
+// - - - - - - - - - - - - - Text - - - - - - - - - - - - -
 
 
 void Game::passportApprovedText()
@@ -793,3 +820,41 @@ void Game::passportDidNotMatchText()
 	main_game_text.setFillColor(sf::Color::Black);
 	
 }
+
+void Game::deadText()
+{
+
+	if (player_lives <= 0)
+	{
+
+		sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
+		overlay.setFillColor(sf::Color(0, 0, 0, 230));
+		window.draw(overlay);
+		/*window.setView(window.getDefaultView());
+		window.clear(sf::Color::Black);*/
+
+		dead_text.setFont(main_game_font);
+		dead_text.setCharacterSize(20);
+		dead_text.setFillColor(sf::Color::White);
+		dead_text.setPosition(window.getSize().x / 2 - dead_text.getGlobalBounds().width / 2, 180);
+		dead_text.setString("The tide has risen\n You did not let in enough animals");
+
+		play_again_text.setFont(main_game_font);
+		play_again_text.setCharacterSize(20);
+		play_again_text.setFillColor(sf::Color::White);
+		play_again_text.setPosition(window.getSize().x / 2 - play_again_text.getGlobalBounds().width / 2, 350);
+		play_again_text.setString("Play again? \n Press enter");
+
+		window.draw(dead_text);
+		window.draw(play_again_text);
+		timer_active = false;
+
+
+
+	}
+
+
+
+}
+
+

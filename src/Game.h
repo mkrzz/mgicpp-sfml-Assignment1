@@ -30,6 +30,8 @@ class Game
   sf::Text play_text;
   sf::Text quit_text;
   sf::Text main_game_text;
+  sf::Text dead_text;
+  sf::Text play_again_text;
 
 
   sf::Sprite* character;
@@ -69,7 +71,9 @@ class Game
   sf::Texture lives_texture;
 
   int player_lives = 3;
+  int passports_approved = 0;
 
+  
 
   bool in_menu = true;
   bool play_selected = true;
@@ -81,7 +85,11 @@ class Game
   bool button_visability = false;
   bool stamp_pressed = false;
   bool wrong_name = false;
- 
+  bool has_won = false;
+  bool is_dead = false;
+  bool game_over = false;
+  bool timer_active = true;
+  
 
   void menuTexts();
   void renderMenu();
@@ -105,6 +113,7 @@ class Game
   void passportDeniedText();
   void rejectedValidPassportText();
   void passportDidNotMatchText();
+  void deadText();
   
 
 
