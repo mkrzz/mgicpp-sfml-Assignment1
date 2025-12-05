@@ -716,7 +716,6 @@ void Game::initialiseGameTimer()
 	/*timer_text.setString("Time: 2");*/
 
 	
-
 }
 
 void Game::initialiseMainGameFont()
