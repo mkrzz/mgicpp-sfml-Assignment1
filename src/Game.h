@@ -25,6 +25,7 @@ class Game
   sf::Font play_font;
   sf::Font quit_font;
   sf::Font main_game_font;
+  sf::Font dead_font;
 
   sf::Text menu_text;
   sf::Text play_text;
@@ -89,31 +90,37 @@ class Game
   bool is_dead = false;
   bool game_over = false;
   bool timer_active = true;
+  bool show_timer = true;
   
 
-  void menuTexts();
-  void renderMenu();
+  void initialiseMenuTexts();
+  void initialiseMenu();
   void toggleMenuSelection();
   void handleMenuSelection();
-  void renderWorld();
+  void disableTimer();
   void initialiseAnimals();
   void initialisePassports();
   void newAnimal();
   void initialiseSprites();
-  void renderSprites();
+  void drawSprites();
   void dragSprite(sf::Sprite* sprite);
   void initialiseButtons();
   void initialiseStamps();
-  void renderButtons();
-  void renderStamps();
-  void playerLives();
+  void drawButtons();
+  void drawStamps();
+  void drawPlayerLives();
   void initialiseFloodGauge();
   void floodTimer(float dt);
   void passportApprovedText();
   void passportDeniedText();
   void rejectedValidPassportText();
   void passportDidNotMatchText();
-  void deadText();
+  void drawDeadText();
+  void checkPlayerDead();
+  void drawMenu();
+  void drawWorld();
+  void initialisePlayerLives();
+  void handlePassportTextChoice();
   
 
 

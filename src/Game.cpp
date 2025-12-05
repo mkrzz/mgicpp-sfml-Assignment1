@@ -24,16 +24,23 @@ bool Game::init()
 
 	in_menu = true;
 	
-	menuTexts();
-	renderMenu();
+	initialiseMenuTexts();
+	initialiseMenu();
 	initialiseSprites();
 	initialiseAnimals();
 	initialiseButtons();
 	initialiseStamps();
 	initialisePassports();
 	initialiseFloodGauge();
+	initialisePlayerLives();
 	newAnimal();
-	playerLives();
+	disableTimer();
+	
+	if (!main_game_font.loadFromFile("../Data/Fonts/Impact.ttf"))
+	{
+		std::cout << "Font did not load\n";
+	}
+	
 	
     return true;
 
@@ -47,7 +54,8 @@ void Game::update(float dt)
 
 		dragSprite(dragged);
 		floodTimer(dt);
-
+		checkPlayerDead();
+		
 	}
 
 }
@@ -58,8 +66,20 @@ void Game::render()
 	if (in_menu)
 	{
 
-		renderMenu();
+		drawMenu();
 
+
+	}
+
+	else if (is_running)
+	{
+
+		drawWorld();
+		drawSprites();
+		drawButtons();
+		drawStamps();
+		drawPlayerLives();
+		window.draw(main_game_text);
 
 	}
 
@@ -72,24 +92,11 @@ void Game::render()
 	else if (is_dead)
 	{
 
+		drawDeadText();
 
 	}
 
-	else if (is_running)
-	{
-
-		renderWorld();
-		renderSprites();
-		renderButtons();
-		renderStamps();
-		playerLives();
-		deadText();
-		
-
-		window.draw(flood_gauge);
-		window.draw(main_game_text);
-		
-	}
+	
 
 
 }
@@ -165,7 +172,7 @@ void Game::mouseButtonPressed(sf::Event event)
 				stamp_pressed = true;
 				
 
-				renderStamps();
+				drawStamps();
 
 				// sets stamp to same position as button
 				accept_stamp.setPosition(accept_button.getPosition());
@@ -187,7 +194,7 @@ void Game::mouseButtonPressed(sf::Event event)
 				stamp_pressed = true;
 				
 			
-				renderStamps();
+				drawStamps();
 
 				reject_stamp.setPosition(reject_button.getPosition());
 
@@ -232,69 +239,17 @@ void Game::mouseButtonReleased(sf::Event event)
 
 		// collision detection between passport and animal, spawns new animal when detected 
 		// added check to make sure passport has been stamped before accepting/rejecting
-		// nested if statements to display correct text depending on player stamp choice 
+		// displays correct text depending on player stamp choice 
 
 		if (stamp_pressed && passport->getGlobalBounds().intersects(character->getGlobalBounds()))
 		{
 			
-
-			if (passport_accepted)
-			{
-
-				if (should_accept)
-				{
-
-					passportApprovedText();
-					std::cout << "PASSPORT APPROVED - You may board the Ark\n";
-					passports_approved++;
-
-				}
-				else
-				{
-
-					passportDidNotMatchText();
-					std::cout << "VIOLATION - Passport did not match!\n";
-					player_lives--;
-
-				}
-
-			}
-			else if (passport_rejected)
-			{
-
-				if (!should_accept)
-				{
-
-					passportDeniedText();
-					std::cout << "PASSPORT DENIED\n";
-
-				}
-				else
-				{
-
-					rejectedValidPassportText();
-					std::cout << "VIOLATION - You rejected a valid passport\n";
-					player_lives--;
-
-				}
+			handlePassportTextChoice();
 			
-
-			}
-
-			if (wrong_name)
-			{
-				
-				{
-					std::cout << "VIOLATION - Wrong name on Passport\n";
-				}
-				
-				
-			}
-
-
 			stamp_pressed = false;
 
 			newAnimal();
+
 		}
 
 	}
@@ -306,73 +261,11 @@ void Game::mouseButtonReleased(sf::Event event)
 
 
 
-// - - - - - - - - - - - - - Rendering - - - - - - - - - - - - - - -
-
-
-void Game::renderMenu()
-{
-
-	//menu texture
-	if (!menu_background_texture.loadFromFile("../Data/Images/Stock_Images/Ark-p.png"))
-	{
-		std::cout << "background texture did not load \n";
-	}
-
-	
-	menu_background.setTexture(menu_background_texture);
-	menu_background.setScale(.16, .16);
-	menu_background.setPosition(150, 280);
-	
-		
-
-	window.draw(menu_background);
-	window.draw(menu_text);
-	window.draw(play_text);
-	window.draw(quit_text);
-	
-		
-
-}
-
-void Game::renderWorld()
-{
-	
-
-	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/Artboard 1.png"))
-	{
-		std::cout << "background texture did not load \n";
-	}
-
-	game_background.setTexture(game_background_texture);
-	game_background.setScale(1.f, 1.f);
-	game_background.setPosition(0.f, 0.f);
-	window.draw(game_background);
+// - - - - - - - - - - - - - Draw - - - - - - - - - - - - - - -
 
 
 
-	/*playerLives();*/
-
-	/*stop_text.setFont(stop_font);
-	stop_text.setString("STOP!");
-	stop_text.setCharacterSize(50);
-	stop_text.setFillColor(sf::Color::Red);
-	stop_text.setPosition(375, 35);
-	window.draw(stop_text);*/
-
-	/*box.setSize(sf::Vector2f(870, 300));
-	box.setPosition(100, 380);
-	box.setOutlineColor(sf::Color::Black);
-	box.setOutlineThickness(1);
-	window.draw(box);*/
-
-	/*box2.setSize(sf::Vector2f(300, 300));
-	box2.setPosition(700, 380);
-	box2.setOutlineColor(sf::Color::Black);
-	box2.setOutlineThickness(1);
-	window.draw(box2);*/
-}
-
-void Game::renderSprites()
+void Game::drawSprites()
 {
 
 	window.draw(*character);
@@ -380,7 +273,7 @@ void Game::renderSprites()
 
 }
 
-void Game::renderButtons()
+void Game::drawButtons()
 {
 
 	if (button_visability)
@@ -392,7 +285,7 @@ void Game::renderButtons()
 
 }
 
-void Game::renderStamps()
+void Game::drawStamps()
 {
 
 
@@ -407,13 +300,100 @@ void Game::renderStamps()
 
 }
 
+void Game::drawPlayerLives()
+{
+
+	for (int i = 0; i < player_lives; ++i)
+	{
+
+		lives.setPosition(100 + i * 70, 300);
+		window.draw(lives);
+
+	}
+
+}
+
+void Game::drawDeadText()
+{
+
+	if (!dead_font.loadFromFile("../Data/Fonts/open-sans/OpenSans-BoldItalic.ttf"))
+	{
+
+		std::cout << "Font did not load";
+	}
+
+
+
+
+	// adds a transparantish overlay when player dies
+	sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
+	overlay.setFillColor(sf::Color(0, 0, 0, 230));
+	window.draw(overlay);
+	/*window.setView(window.getDefaultView());
+	window.clear(sf::Color::Black);*/
+
+
+	dead_text.setFont(dead_font);
+	dead_text.setCharacterSize(50);
+	dead_text.setFillColor(sf::Color::White);
+	dead_text.setString("You have made too many errors\n");
+	dead_text.setPosition(window.getSize().x / 2 - dead_text.getGlobalBounds().width / 2, 20);
+
+
+	play_again_text.setFont(dead_font);
+	play_again_text.setCharacterSize(50);
+	play_again_text.setFillColor(sf::Color::White);
+	play_again_text.setString("Play again? \n Press enter");
+	play_again_text.setPosition(window.getSize().x / 2 - play_again_text.getGlobalBounds().width / 2, 50);
+
+
+	window.draw(dead_text);
+	window.draw(play_again_text);
+
+
+
+
+
+
+
+}
+
+void Game::drawMenu()
+{
+	menu_background.setTexture(menu_background_texture);
+	menu_background.setScale(.16, .16);
+	menu_background.setPosition(150, 280);
+
+
+
+	window.draw(menu_background);
+	window.draw(menu_text);
+	window.draw(play_text);
+	window.draw(quit_text);
+}
+
+void Game::drawWorld()
+{
+
+	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/Artboard 1.png"))
+	{
+		std::cout << "background texture did not load \n";
+	}
+
+	game_background.setTexture(game_background_texture);
+	game_background.setScale(1.f, 1.f);
+	game_background.setPosition(0.f, 0.f);
+	window.draw(game_background);
+
+}
+
 
 
 
 // - - - - - - - - - - - - - Menu / Game UI - - - - - - - - - - - - -
 
 
-void Game::menuTexts()
+void Game::initialiseMenuTexts()
 {
 	// menu font file
 	if (!menu_font.loadFromFile("../Data/Fonts/Impact.ttf"))
@@ -642,7 +622,94 @@ void Game::initialiseFloodGauge()
 	flood_gauge.setPosition(20.f, 20.f);
 }
 
+void Game::initialiseMenu()
+{
 
+	//menu texture
+	if (!menu_background_texture.loadFromFile("../Data/Images/Stock_Images/Ark-p.png"))
+	{
+		std::cout << "background texture did not load \n";
+	}
+
+
+
+
+}
+
+void Game::initialisePlayerLives()
+{
+
+	if (!lives_texture.loadFromFile("../Data/Images/Heart.png"))
+	{
+
+		std::cout << "Texture did not load";
+
+	}
+	lives.setTexture(lives_texture);
+	lives.setScale(1.0f, 1.0f);
+
+}
+
+void Game::handlePassportTextChoice()
+{
+
+	if (passport_accepted)
+	{
+
+		if (should_accept)
+		{
+
+			passportApprovedText();
+			std::cout << "PASSPORT APPROVED - You may board the Ark\n";
+			passports_approved++;
+
+
+		}
+		else
+		{
+
+			passportDidNotMatchText();
+			std::cout << "VIOLATION - Passport did not match!\n";
+			player_lives--;
+
+
+		}
+
+	}
+	else if (passport_rejected)
+	{
+
+		if (!should_accept)
+		{
+
+			passportDeniedText();
+			std::cout << "PASSPORT DENIED\n";
+
+
+		}
+		else
+		{
+
+			rejectedValidPassportText();
+			std::cout << "VIOLATION - You rejected a valid passport\n";
+			player_lives--;
+
+
+		}
+
+
+	}
+
+	if (wrong_name)
+	{
+
+		{
+			std::cout << "VIOLATION - Wrong name on Passport\n";
+		}
+
+
+	}
+}
 
 
 
@@ -718,25 +785,18 @@ void Game::dragSprite(sf::Sprite* sprite)
 }
 
 
-void Game::playerLives()
+void Game::disableTimer()
 {
 
-	if (!lives_texture.loadFromFile("../Data/Images/Heart.png"))
+
+	//disables timer from game over screen
+	if (show_timer)
 	{
-
-		std::cout << "Texture did not load";
-
+		window.draw(flood_gauge);
 	}
 
-	for (int i = 0; i < player_lives; ++i)
-	{
-			
-		lives.setTexture(lives_texture);
-		lives.setScale(1.0f, 1.0f);
-		lives.setPosition(100 + i * 70, 300);
-		window.draw(lives);
 
-	}
+
 
 }
 
@@ -770,22 +830,20 @@ void Game::floodTimer(float dt)
 
 
 
-// - - - - - - - - - - - - - Text - - - - - - - - - - - - -
+
 
 
 void Game::passportApprovedText()
 {
 
-	if (!main_game_font.loadFromFile("../Data/Fonts/Impact.ttf"))
-	{
-		std::cout << "Font did not load";
-	}
+	
 
 	main_game_text.setFont(main_game_font);
 	main_game_text.setString("PASSPORT APPROVED - You may board the Ark\n");
 	main_game_text.setCharacterSize(50);
 	main_game_text.setPosition(window.getSize().x / 2 - main_game_text.getGlobalBounds().width / 2, 20);
-	main_game_text.setFillColor(sf::Color::Black);
+	main_game_text.setFillColor(sf::Color::White);
+
 
 	
 }
@@ -821,40 +879,25 @@ void Game::passportDidNotMatchText()
 	
 }
 
-void Game::deadText()
+
+
+void Game::checkPlayerDead()
 {
 
-	if (player_lives <= 0)
+	if (player_lives <= 0 && !is_dead)
 	{
-
-		sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
-		overlay.setFillColor(sf::Color(0, 0, 0, 230));
-		window.draw(overlay);
-		/*window.setView(window.getDefaultView());
-		window.clear(sf::Color::Black);*/
-
-		dead_text.setFont(main_game_font);
-		dead_text.setCharacterSize(20);
-		dead_text.setFillColor(sf::Color::White);
-		dead_text.setPosition(window.getSize().x / 2 - dead_text.getGlobalBounds().width / 2, 180);
-		dead_text.setString("The tide has risen\n You did not let in enough animals");
-
-		play_again_text.setFont(main_game_font);
-		play_again_text.setCharacterSize(20);
-		play_again_text.setFillColor(sf::Color::White);
-		play_again_text.setPosition(window.getSize().x / 2 - play_again_text.getGlobalBounds().width / 2, 350);
-		play_again_text.setString("Play again? \n Press enter");
-
-		window.draw(dead_text);
-		window.draw(play_again_text);
+		is_dead = true;
+		is_running = false;
 		timer_active = false;
-
-
-
+		show_timer = false;
 	}
 
 
-
 }
+
+
+
+
+
 
 
