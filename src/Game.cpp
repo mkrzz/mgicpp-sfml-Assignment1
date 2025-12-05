@@ -148,6 +148,7 @@ void Game::keyPressed(sf::Event event)
 
 	}
 
+	// resets game if game over - restarts each day fresh
 	else
 	{
 		if (event.key.code == sf::Keyboard::Enter)
@@ -896,9 +897,10 @@ void Game::gameTimer()
 		timer_text.setString(
 			"Time: " + std::to_string(std::max(remainingSeconds, 0)));
 
+		//pauses flood timer when overlay is showing 
 		if (remaining <= sf::Time::Zero)
 		{
-			/*is_running = false;*/
+			is_running = false;
 			show_overlay = true;
 			
 		}
@@ -911,7 +913,7 @@ void Game::startNewDay()
 	//restarts game clock 
 	is_running = true;
 	show_overlay = false;
-	game_duration = sf::seconds(60);
+	game_duration = sf::seconds(2);
 	game_clock.restart();
 
 
