@@ -24,8 +24,9 @@ bool Game::init()
 
 	in_menu = true;
 	
-	initialiseMenuTexts();
+	initialiseMenuFonts();
 	initialiseMenu();
+	initialiseMainGameFont();
 	initialiseSprites();
 	initialiseAnimals();
 	initialiseButtons();
@@ -36,10 +37,7 @@ bool Game::init()
 	newAnimal();
 	disableTimer();
 	
-	if (!main_game_font.loadFromFile("../Data/Fonts/Impact.ttf"))
-	{
-		std::cout << "Font did not load\n";
-	}
+	
 	
 	
     return true;
@@ -58,6 +56,12 @@ void Game::update(float dt)
 		
 	}
 
+	else if ((is_dead || has_won) && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+	{
+		restartGame();
+		newAnimal();
+	}
+
 }
 
 void Game::render()
@@ -68,10 +72,9 @@ void Game::render()
 
 		drawMenu();
 
-
 	}
 
-	else if (is_running)
+	else
 	{
 
 		drawWorld();
@@ -79,26 +82,25 @@ void Game::render()
 		drawButtons();
 		drawStamps();
 		drawPlayerLives();
-		window.draw(main_game_text);
-
-	}
-
-	else if (has_won)
-	{
 
 
-	}
+		if (has_won)
+		{
 
-	else if (is_dead)
-	{
 
-		drawDeadText();
+		}
+
+		else if (is_dead)
+		{
+
+			drawDeadText();
+			
+
+		}
 
 	}
 
 	
-
-
 }
 
 void Game::mouseClicked(sf::Event event)
@@ -315,24 +317,20 @@ void Game::drawPlayerLives()
 
 void Game::drawDeadText()
 {
-
+	
 	if (!dead_font.loadFromFile("../Data/Fonts/open-sans/OpenSans-BoldItalic.ttf"))
 	{
 
 		std::cout << "Font did not load";
 	}
 
-
-
-
 	// adds a transparantish overlay when player dies
 	sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
-	overlay.setFillColor(sf::Color(0, 0, 0, 230));
+	overlay.setFillColor(sf::Color(0, 0, 0, 210));
 	window.draw(overlay);
-	/*window.setView(window.getDefaultView());
-	window.clear(sf::Color::Black);*/
 
 
+		
 	dead_text.setFont(dead_font);
 	dead_text.setCharacterSize(50);
 	dead_text.setFillColor(sf::Color::White);
@@ -349,11 +347,7 @@ void Game::drawDeadText()
 
 	window.draw(dead_text);
 	window.draw(play_again_text);
-
-
-
-
-
+	is_running = false;
 
 
 }
@@ -384,6 +378,7 @@ void Game::drawWorld()
 	game_background.setScale(1.f, 1.f);
 	game_background.setPosition(0.f, 0.f);
 	window.draw(game_background);
+	window.draw(main_game_text);
 
 }
 
@@ -393,7 +388,7 @@ void Game::drawWorld()
 // - - - - - - - - - - - - - Menu / Game UI - - - - - - - - - - - - -
 
 
-void Game::initialiseMenuTexts()
+void Game::initialiseMenuFonts()
 {
 	// menu font file
 	if (!menu_font.loadFromFile("../Data/Fonts/Impact.ttf"))
@@ -650,66 +645,7 @@ void Game::initialisePlayerLives()
 
 }
 
-void Game::handlePassportTextChoice()
-{
 
-	if (passport_accepted)
-	{
-
-		if (should_accept)
-		{
-
-			passportApprovedText();
-			std::cout << "PASSPORT APPROVED - You may board the Ark\n";
-			passports_approved++;
-
-
-		}
-		else
-		{
-
-			passportDidNotMatchText();
-			std::cout << "VIOLATION - Passport did not match!\n";
-			player_lives--;
-
-
-		}
-
-	}
-	else if (passport_rejected)
-	{
-
-		if (!should_accept)
-		{
-
-			passportDeniedText();
-			std::cout << "PASSPORT DENIED\n";
-
-
-		}
-		else
-		{
-
-			rejectedValidPassportText();
-			std::cout << "VIOLATION - You rejected a valid passport\n";
-			player_lives--;
-
-
-		}
-
-
-	}
-
-	if (wrong_name)
-	{
-
-		{
-			std::cout << "VIOLATION - Wrong name on Passport\n";
-		}
-
-
-	}
-}
 
 
 
@@ -896,6 +832,84 @@ void Game::checkPlayerDead()
 }
 
 
+
+void Game::handlePassportTextChoice()
+{
+
+	if (passport_accepted)
+	{
+
+		if (should_accept)
+		{
+
+			passportApprovedText();
+			std::cout << "PASSPORT APPROVED - You may board the Ark\n";
+			passports_approved++;
+
+
+		}
+		else
+		{
+
+			passportDidNotMatchText();
+			std::cout << "VIOLATION - Passport did not match!\n";
+			player_lives--;
+
+
+		}
+
+	}
+	else if (passport_rejected)
+	{
+
+		if (!should_accept)
+		{
+
+			passportDeniedText();
+			std::cout << "PASSPORT DENIED\n";
+
+
+		}
+		else
+		{
+
+			rejectedValidPassportText();
+			std::cout << "VIOLATION - You rejected a valid passport\n";
+			player_lives--;
+
+
+		}
+
+
+	}
+
+	if (wrong_name)
+	{
+
+		{
+			std::cout << "VIOLATION - Wrong name on Passport\n";
+		}
+
+
+	}
+}
+
+void Game::initialiseMainGameFont()
+{
+	if (!main_game_font.loadFromFile("../Data/Fonts/Impact.ttf"))
+	{
+		std::cout << "Font did not load\n";
+	}
+}
+
+void Game::restartGame()
+{
+	is_running = true;
+	player_lives = 3;
+	has_won = false;
+	is_dead = false;
+
+}
 
 
 

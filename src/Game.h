@@ -93,7 +93,7 @@ class Game
   bool show_timer = true;
   
 
-  void initialiseMenuTexts();
+  void initialiseMenuFonts();
   void initialiseMenu();
   void toggleMenuSelection();
   void handleMenuSelection();
@@ -121,6 +121,9 @@ class Game
   void drawWorld();
   void initialisePlayerLives();
   void handlePassportTextChoice();
+  void initialiseMainGameFont();
+  void restartGame();
+  
   
 
 
