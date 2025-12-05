@@ -24,6 +24,7 @@ bool Game::init()
 
 	in_menu = true;
 	
+	
 	initialiseMenuFonts();
 	initialiseMenu();
 	initialiseMainGameFont();
@@ -37,6 +38,8 @@ bool Game::init()
 	initialisePlayerLives();
 	initialiseGameScreen();
 	newAnimal();
+	initialiseGameTimer();
+	initialiseOverlay();
 	
 	
 	
@@ -55,20 +58,12 @@ void Game::update(float dt)
 		dragSprite(dragged);
 		floodTimer(dt);
 		checkPlayerDead();
+		gameTimer();
 		
-	}
-
-	else if ((is_dead || time_up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-	{
-
-		restartGame();
-		newAnimal();
 		
-
 	}
 
 	
-
 }
 
 void Game::render()
@@ -89,17 +84,24 @@ void Game::render()
 		drawButtons();
 		drawStamps();
 		drawPlayerLives();
-		disableTimer();
+		drawFloodGauge();
+		window.draw(timer_text);
 
+		
+		if (show_overlay)
+		{
+			endOfDay();
+		}
 
 		if (time_up)
 		{
 
-			drawOutOfTimeText();
+			drawFloodHasRisenText();
 			
 
 		}
 
+				
 		else if (is_dead)
 		{
 
@@ -107,7 +109,8 @@ void Game::render()
 			
 
 		}
-
+		
+		
 	}
 
 	
@@ -143,6 +146,30 @@ void Game::keyPressed(sf::Event event)
 			
 		}
 
+	}
+
+	else
+	{
+		if (event.key.code == sf::Keyboard::Enter)
+		{
+
+			if (is_dead || time_up)
+			{
+
+				restartGame();
+				newAnimal();
+
+			}
+			else if (show_overlay)
+			{
+
+				show_overlay = false;
+				startNewDay();
+				game_clock.restart();
+				newAnimal();
+
+			}
+		}
 	}
 
 }
@@ -329,28 +356,12 @@ void Game::drawPlayerLives()
 void Game::drawNoLivesText()
 {
 	
-	
-
 	// adds a transparantish overlay when player dies
 	sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
 	overlay.setFillColor(sf::Color(0, 0, 0, 200));
+	
 	window.draw(overlay);
-
-
-		
-	dead_text.setFont(dead_font);
-	dead_text.setCharacterSize(50);
-	dead_text.setFillColor(sf::Color::White);
-	dead_text.setString("You have made too many errors\n");
-	dead_text.setPosition(window.getSize().x / 2 - dead_text.getGlobalBounds().width / 2, 20);
-
-
-	play_again_text.setFont(dead_font);
-	play_again_text.setCharacterSize(50);
-	play_again_text.setFillColor(sf::Color::White);
-	play_again_text.setString("Play again? \n Press enter");
-	play_again_text.setPosition(window.getSize().x / 2 - play_again_text.getGlobalBounds().width / 2, 50);
-
+	
 
 	window.draw(dead_text);
 	window.draw(play_again_text);
@@ -365,11 +376,6 @@ void Game::drawMenu()
 
 	timer_active = false;
 
-	menu_background.setTexture(menu_background_texture);
-	menu_background.setScale(.16, .16);
-	menu_background.setPosition(150, 280);
-
-
 	window.draw(menu_background);
 	window.draw(menu_text);
 	window.draw(play_text);
@@ -381,19 +387,14 @@ void Game::drawWorld()
 {
 
 	timer_active = true;
-
-	
-
-	game_background.setTexture(game_background_texture);
-	game_background.setScale(1.f, 1.f);
-	game_background.setPosition(0.f, 0.f);
+				
 	window.draw(game_background);
 	window.draw(main_game_text);
 
 
 }
 
-void Game::drawOutOfTimeText()
+void Game::drawFloodHasRisenText()
 {
 
 	if (flood_timer >= flood_max_timer)
@@ -414,6 +415,21 @@ void Game::drawOutOfTimeText()
 		window.draw(out_of_time_text);
 
 	}
+
+}
+
+void Game::drawFloodGauge()
+{
+
+
+	//disables timer from game over screen
+	if (show_timer)
+	{
+		window.draw(flood_gauge);
+	}
+
+
+
 
 }
 
@@ -514,6 +530,8 @@ void Game::handleMenuSelection()
 
 		in_menu = false;
 		is_running = true;
+		game_clock.restart();
+		game_duration = sf::seconds(2);
 
 
 	}
@@ -664,7 +682,9 @@ void Game::initialiseMenu()
 		std::cout << "background texture did not load \n";
 	}
 
-
+	menu_background.setTexture(menu_background_texture);
+	menu_background.setScale(.16, .16);
+	menu_background.setPosition(150, 280);
 
 
 }
@@ -680,6 +700,19 @@ void Game::initialisePlayerLives()
 	}
 	lives.setTexture(lives_texture);
 	lives.setScale(1.0f, 1.0f);
+
+	dead_text.setFont(dead_font);
+	dead_text.setCharacterSize(50);
+	dead_text.setFillColor(sf::Color::Black);
+	dead_text.setString("You have made too many errors\n");
+	dead_text.setPosition(window.getSize().x / 2 - dead_text.getGlobalBounds().width / 2, 20);
+
+
+	play_again_text.setFont(dead_font);
+	play_again_text.setCharacterSize(50);
+	play_again_text.setFillColor(sf::Color::Black);
+	play_again_text.setString("Play again? \n Press enter");
+	play_again_text.setPosition(window.getSize().x / 2 - play_again_text.getGlobalBounds().width / 2, 50);
 
 }
 
@@ -698,6 +731,25 @@ void Game::initialiseGameScreen()
 	{
 		std::cout << "background texture did not load \n";
 	}
+
+	game_background.setTexture(game_background_texture);
+	game_background.setScale(1.f, 1.f);
+	game_background.setPosition(0.f, 0.f);
+
+}
+
+void Game::initialiseGameTimer()
+{
+
+	game_duration = sf::seconds(5);
+	timer_text.setFont(dead_font);
+	timer_text.setCharacterSize(50);
+	timer_text.setFillColor(sf::Color::Black);
+	timer_text.setPosition(window.getSize().x - 220, 10);
+	timer_text.setString("Time: 5");
+
+	
+
 }
 
 void Game::initialiseMainGameFont()
@@ -710,7 +762,14 @@ void Game::initialiseMainGameFont()
 
 }
 
+void Game::initialiseOverlay()
+{
 
+	// adds a transparantish overlay when player dies
+	overlay.setSize(sf::Vector2f(window.getSize()));
+	overlay.setFillColor(sf::Color(0, 0, 0, 200));
+
+}
 
 
 // - - - - - - - - - - - - - Spawn new animal - - - - - - - - - - - - -
@@ -741,11 +800,7 @@ void Game::newAnimal()
 		should_accept = false;
 		
 	}
-
-	
-
-	
-	
+		
 
 	character->setTexture(animals[animal_index], true);
 	character->setScale(.33, .33);
@@ -828,20 +883,51 @@ void Game::floodTimer(float dt)
 
 }
 
-void Game::disableTimer()
+void Game::gameTimer()
 {
 
-
-	//disables timer from game over screen
-	if (show_timer)
+	if (is_running)
 	{
-		window.draw(flood_gauge);
+		//sets game timer per round
+		sf::Time elapsed = game_clock.getElapsedTime();
+		sf::Time remaining = game_duration - elapsed;
+
+		int remainingSeconds = static_cast<int>(remaining.asSeconds());
+		timer_text.setString(
+			"Time: " + std::to_string(std::max(remainingSeconds, 0)));
+
+		if (remaining <= sf::Time::Zero)
+		{
+			/*is_running = false;*/
+			show_overlay = true;
+			
+		}
 	}
+}
 
+void Game::startNewDay()
+{
 
+	//restarts game clock 
+	is_running = true;
+	show_overlay = false;
+	game_duration = sf::seconds(60);
+	game_clock.restart();
 
 
 }
+
+void Game::endOfDay()
+{
+	
+	window.draw(overlay);
+	window.draw(dead_text);
+	window.draw(play_again_text);
+
+	
+}
+
+
 
 
 
@@ -916,6 +1002,7 @@ void Game::handlePassportTextChoice()
 			passportDidNotMatchText();
 			std::cout << "VIOLATION - Passport did not match!\n";
 			player_lives--;
+			passports_approved_illegally++;
 
 
 		}
@@ -945,7 +1032,7 @@ void Game::handlePassportTextChoice()
 
 	}
 
-	if (wrong_name)
+	/*if (wrong_name)
 	{
 
 		{
@@ -953,7 +1040,7 @@ void Game::handlePassportTextChoice()
 		}
 
 
-	}
+	}*/
 }
 
 
@@ -972,6 +1059,8 @@ void Game::restartGame()
 	timer_active = true;
 	show_timer = true;
 	flood_timer = 0.f;
+	game_clock.restart();
+	game_duration = sf::seconds(60);
 
 }
 

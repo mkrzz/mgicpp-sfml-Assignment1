@@ -17,6 +17,7 @@ class Game
   void keyReleased(sf::Event event);
   void mouseButtonPressed(sf::Event event);
   void mouseButtonReleased(sf::Event event);
+  sf::RectangleShape overlay;
 
  private:
   sf::RenderWindow& window;
@@ -34,7 +35,10 @@ class Game
   sf::Text dead_text;
   sf::Text play_again_text;
   sf::Text out_of_time_text;
+  sf::Text timer_text;
 
+  sf::Clock game_clock;
+  sf::Time game_duration;
 
   sf::Sprite* character;
   sf::Sprite* passport;
@@ -50,7 +54,8 @@ class Game
 
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
-  float flood_max_timer = 30.0f;
+  float flood_max_timer = 60.0f * 5;
+  float day_timer = 0.f;
 
   sf::Sprite* dragged = nullptr;
   sf::Vector2f drag_offset;
@@ -74,6 +79,8 @@ class Game
 
   int player_lives = 3;
   int passports_approved = 0;
+  int passports_approved_illegally = 0;
+  int current_day = 1;
 
   
 
@@ -92,6 +99,8 @@ class Game
   bool game_over = false;
   bool timer_active = true;
   bool show_timer = true;
+  bool show_overlay = false;
+
   
   
 
@@ -99,7 +108,7 @@ class Game
   void initialiseMenu();
   void toggleMenuSelection();
   void handleMenuSelection();
-  void disableTimer();
+  void drawFloodGauge();
   void initialiseAnimals();
   void initialisePassports();
   void newAnimal();
@@ -125,10 +134,14 @@ class Game
   void handlePassportTextChoice();
   void initialiseMainGameFont();
   void restartGame();
-  void drawOutOfTimeText();
+  void drawFloodHasRisenText();
   void initialisePlayAgainFont();
   void initialiseGameScreen();
-  
+  void initialiseGameTimer();
+  void gameTimer();
+  void startNewDay();
+  void endOfDay();
+  void initialiseOverlay();
   
   
 
