@@ -56,7 +56,7 @@ void Game::update(float dt)
 		
 	}
 
-	else if ((is_dead || has_won) && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+	else if ((is_dead) && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 	{
 
 		restartGame();
@@ -90,16 +90,18 @@ void Game::render()
 		disableTimer();
 
 
-		if (has_won)
+		if (time_up)
 		{
 
+			outOfTimeText();
+			
 
 		}
 
 		else if (is_dead)
 		{
 
-			drawDeadText();
+			drawNoLivesText();
 			
 
 		}
@@ -321,7 +323,7 @@ void Game::drawPlayerLives()
 
 }
 
-void Game::drawDeadText()
+void Game::drawNoLivesText()
 {
 	
 	if (!dead_font.loadFromFile("../Data/Fonts/open-sans/OpenSans-BoldItalic.ttf"))
@@ -360,20 +362,25 @@ void Game::drawDeadText()
 
 void Game::drawMenu()
 {
+
+	timer_active = false;
+
 	menu_background.setTexture(menu_background_texture);
 	menu_background.setScale(.16, .16);
 	menu_background.setPosition(150, 280);
-
 
 
 	window.draw(menu_background);
 	window.draw(menu_text);
 	window.draw(play_text);
 	window.draw(quit_text);
+
 }
 
 void Game::drawWorld()
 {
+
+	timer_active = true;
 
 	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/Artboard 1.png"))
 	{
@@ -385,6 +392,7 @@ void Game::drawWorld()
 	game_background.setPosition(0.f, 0.f);
 	window.draw(game_background);
 	window.draw(main_game_text);
+
 
 }
 
@@ -755,10 +763,15 @@ void Game::floodTimer(float dt)
 	//increases at real time speed
 	flood_timer += dt;
 
-	// set an end clamp to stop the timer
-	if (flood_timer > flood_max_timer)
+	// set an end clamp to stop the timer and sets has won to true
+	if (flood_timer >= flood_max_timer && !time_up)
 	{
+
 		flood_timer = flood_max_timer;
+		time_up = true;
+		is_running = false;
+		show_timer = false;
+		
 	}
 
 	// converts timer to control max percentage of gauge (the bars width)
@@ -767,7 +780,7 @@ void Game::floodTimer(float dt)
 	float current_height = max_height * percent;
 
 	// sets max size of gauge
-	flood_gauge.setSize(sf::Vector2f(100.f, current_height));
+	flood_gauge.setSize(sf::Vector2f(500.f, current_height));
 
 	// anchors bar from the bottom so bar rises upwards
 	flood_gauge.setPosition(50, 600 - current_height);	
@@ -918,11 +931,37 @@ void Game::restartGame()
 
 	is_running = true;
 	player_lives = 3;
-	has_won = false;
+	time_up = false;
 	is_dead = false;
 	timer_active = true;
 	show_timer = true;
 	flood_timer = 0.f;
+
+}
+
+void Game::outOfTimeText()
+{
+	if (flood_timer >= flood_max_timer)
+	{
+
+		std::cout << "DRAWING OUT OF TIME TEXT\n";
+
+		// adds a transparantish overlay when player dies
+		sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
+		overlay.setFillColor(sf::Color(0, 0, 0, 210));
+		window.draw(overlay);
+
+
+		out_of_time_text.setFont(dead_font);
+		out_of_time_text.setCharacterSize(100);
+		out_of_time_text.setFillColor(sf::Color::White);
+		out_of_time_text.setString("The flood has risen\n You saved" + std::to_string(passports_approved) + " animals");
+		out_of_time_text.setPosition(window.getSize().x / 2 - out_of_time_text.getGlobalBounds().width / 2, 20);
+
+		
+
+		window.draw(out_of_time_text);
+	}
 
 }
 

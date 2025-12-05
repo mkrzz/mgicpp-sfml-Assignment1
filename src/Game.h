@@ -33,6 +33,7 @@ class Game
   sf::Text main_game_text;
   sf::Text dead_text;
   sf::Text play_again_text;
+  sf::Text out_of_time_text;
 
 
   sf::Sprite* character;
@@ -49,7 +50,7 @@ class Game
 
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
-  float flood_max_timer = 30.0f;
+  float flood_max_timer = 5.0f;
 
   sf::Sprite* dragged = nullptr;
   sf::Vector2f drag_offset;
@@ -86,11 +87,12 @@ class Game
   bool button_visability = false;
   bool stamp_pressed = false;
   bool wrong_name = false;
-  bool has_won = false;
+  bool time_up = false;
   bool is_dead = false;
   bool game_over = false;
   bool timer_active = true;
   bool show_timer = true;
+  
   
 
   void initialiseMenuFonts();
@@ -115,7 +117,7 @@ class Game
   void passportDeniedText();
   void rejectedValidPassportText();
   void passportDidNotMatchText();
-  void drawDeadText();
+  void drawNoLivesText();
   void checkPlayerDead();
   void drawMenu();
   void drawWorld();
@@ -123,6 +125,7 @@ class Game
   void handlePassportTextChoice();
   void initialiseMainGameFont();
   void restartGame();
+  void outOfTimeText();
   
   
   
