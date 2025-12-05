@@ -35,7 +35,7 @@ bool Game::init()
 	initialiseFloodGauge();
 	initialisePlayerLives();
 	newAnimal();
-	disableTimer();
+	
 	
 	
 	
@@ -58,9 +58,14 @@ void Game::update(float dt)
 
 	else if ((is_dead || has_won) && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 	{
+
 		restartGame();
 		newAnimal();
+		
+
 	}
+
+	
 
 }
 
@@ -82,6 +87,7 @@ void Game::render()
 		drawButtons();
 		drawStamps();
 		drawPlayerLives();
+		disableTimer();
 
 
 		if (has_won)
@@ -740,7 +746,7 @@ void Game::disableTimer()
 void Game::floodTimer(float dt)
 {
 	
-	//stops timer is not active
+	//stops timer if not active
 	if (!timer_active)
 	{
 		return;
@@ -904,10 +910,14 @@ void Game::initialiseMainGameFont()
 
 void Game::restartGame()
 {
+
 	is_running = true;
 	player_lives = 3;
 	has_won = false;
 	is_dead = false;
+	timer_active = true;
+	show_timer = true;
+	flood_timer = 0.f;
 
 }
 
