@@ -27,6 +27,7 @@ bool Game::init()
 	initialiseMenuFonts();
 	initialiseMenu();
 	initialiseMainGameFont();
+	initialisePlayAgainFont();
 	initialiseSprites();
 	initialiseAnimals();
 	initialiseButtons();
@@ -34,6 +35,7 @@ bool Game::init()
 	initialisePassports();
 	initialiseFloodGauge();
 	initialisePlayerLives();
+	initialiseGameScreen();
 	newAnimal();
 	
 	
@@ -56,7 +58,7 @@ void Game::update(float dt)
 		
 	}
 
-	else if ((is_dead) && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+	else if ((is_dead || time_up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 	{
 
 		restartGame();
@@ -93,7 +95,7 @@ void Game::render()
 		if (time_up)
 		{
 
-			outOfTimeText();
+			drawOutOfTimeText();
 			
 
 		}
@@ -110,6 +112,7 @@ void Game::render()
 
 	
 }
+
 
 void Game::mouseClicked(sf::Event event)
 {
@@ -326,15 +329,11 @@ void Game::drawPlayerLives()
 void Game::drawNoLivesText()
 {
 	
-	if (!dead_font.loadFromFile("../Data/Fonts/open-sans/OpenSans-BoldItalic.ttf"))
-	{
-
-		std::cout << "Font did not load";
-	}
+	
 
 	// adds a transparantish overlay when player dies
 	sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
-	overlay.setFillColor(sf::Color(0, 0, 0, 210));
+	overlay.setFillColor(sf::Color(0, 0, 0, 200));
 	window.draw(overlay);
 
 
@@ -355,6 +354,7 @@ void Game::drawNoLivesText()
 
 	window.draw(dead_text);
 	window.draw(play_again_text);
+
 	is_running = false;
 
 
@@ -382,10 +382,7 @@ void Game::drawWorld()
 
 	timer_active = true;
 
-	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/Artboard 1.png"))
-	{
-		std::cout << "background texture did not load \n";
-	}
+	
 
 	game_background.setTexture(game_background_texture);
 	game_background.setScale(1.f, 1.f);
@@ -396,10 +393,35 @@ void Game::drawWorld()
 
 }
 
+void Game::drawOutOfTimeText()
+{
+
+	if (flood_timer >= flood_max_timer)
+	{
+
+		// adds a transparant-ish overlay when player dies
+		sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
+		overlay.setFillColor(sf::Color(0, 0, 0, 200));
+		window.draw(overlay);
+
+
+		out_of_time_text.setFont(dead_font);
+		out_of_time_text.setCharacterSize(100);
+		out_of_time_text.setFillColor(sf::Color::White);
+		out_of_time_text.setString("The flood has risen\n You saved " + std::to_string(passports_approved) + " animals");
+		out_of_time_text.setPosition(window.getSize().x / 2 - out_of_time_text.getGlobalBounds().width / 2, 20);
+
+		window.draw(out_of_time_text);
+
+	}
+
+}
+
 
 
 
 // - - - - - - - - - - - - - Menu / Game UI - - - - - - - - - - - - -
+
 
 
 void Game::initialiseMenuFonts()
@@ -505,7 +527,9 @@ void Game::handleMenuSelection()
 }
 
 
+
 // - - - - - - - - - - - - - Initialise - - - - - - - - - - - - -
+
 
 
 void Game::initialiseSprites()
@@ -659,11 +683,38 @@ void Game::initialisePlayerLives()
 
 }
 
+void Game::initialisePlayAgainFont()
+{
+	if (!dead_font.loadFromFile("../Data/Fonts/open-sans/OpenSans-BoldItalic.ttf"))
+	{
+
+		std::cout << "Font did not load";
+	}
+}
+
+void Game::initialiseGameScreen()
+{
+	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/Artboard 1.png"))
+	{
+		std::cout << "background texture did not load \n";
+	}
+}
+
+void Game::initialiseMainGameFont()
+{
+
+	if (!main_game_font.loadFromFile("../Data/Fonts/Impact.ttf"))
+	{
+		std::cout << "Font did not load\n";
+	}
+
+}
 
 
 
 
 // - - - - - - - - - - - - - Spawn new animal - - - - - - - - - - - - -
+
 
 
 void Game::newAnimal()
@@ -708,8 +759,6 @@ void Game::newAnimal()
 
 }
 
-
-
 void Game::dragSprite(sf::Sprite* sprite)
 {
 
@@ -735,25 +784,16 @@ void Game::dragSprite(sf::Sprite* sprite)
 }
 
 
-void Game::disableTimer()
-{
 
 
-	//disables timer from game over screen
-	if (show_timer)
-	{
-		window.draw(flood_gauge);
-	}
+// - - - - - - - - - - - - - Timer - - - - - - - - - - - - -
 
 
-
-
-}
 
 
 void Game::floodTimer(float dt)
 {
-	
+
 	//stops timer if not active
 	if (!timer_active)
 	{
@@ -771,7 +811,7 @@ void Game::floodTimer(float dt)
 		time_up = true;
 		is_running = false;
 		show_timer = false;
-		
+
 	}
 
 	// converts timer to control max percentage of gauge (the bars width)
@@ -783,13 +823,29 @@ void Game::floodTimer(float dt)
 	flood_gauge.setSize(sf::Vector2f(500.f, current_height));
 
 	// anchors bar from the bottom so bar rises upwards
-	flood_gauge.setPosition(50, 600 - current_height);	
+	flood_gauge.setPosition(50, 600 - current_height);
+
+
+}
+
+void Game::disableTimer()
+{
+
+
+	//disables timer from game over screen
+	if (show_timer)
+	{
+		window.draw(flood_gauge);
+	}
+
+
 
 
 }
 
 
 
+// - - - - - - - - - - - - - Passport - - - - - - - - - - - - -
 
 
 
@@ -838,24 +894,6 @@ void Game::passportDidNotMatchText()
 	main_game_text.setFillColor(sf::Color::Black);
 	
 }
-
-
-
-void Game::checkPlayerDead()
-{
-
-	if (player_lives <= 0 && !is_dead)
-	{
-		is_dead = true;
-		is_running = false;
-		timer_active = false;
-		show_timer = false;
-	}
-
-
-}
-
-
 
 void Game::handlePassportTextChoice()
 {
@@ -918,13 +956,11 @@ void Game::handlePassportTextChoice()
 	}
 }
 
-void Game::initialiseMainGameFont()
-{
-	if (!main_game_font.loadFromFile("../Data/Fonts/Impact.ttf"))
-	{
-		std::cout << "Font did not load\n";
-	}
-}
+
+
+// - - - - - - - - - - - - - Restart Game - - - - - - - - - - - - -
+
+
 
 void Game::restartGame()
 {
@@ -939,31 +975,28 @@ void Game::restartGame()
 
 }
 
-void Game::outOfTimeText()
+void Game::checkPlayerDead()
 {
-	if (flood_timer >= flood_max_timer)
+
+	if (player_lives <= 0 && !is_dead)
 	{
-
-		std::cout << "DRAWING OUT OF TIME TEXT\n";
-
-		// adds a transparantish overlay when player dies
-		sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
-		overlay.setFillColor(sf::Color(0, 0, 0, 210));
-		window.draw(overlay);
-
-
-		out_of_time_text.setFont(dead_font);
-		out_of_time_text.setCharacterSize(100);
-		out_of_time_text.setFillColor(sf::Color::White);
-		out_of_time_text.setString("The flood has risen\n You saved" + std::to_string(passports_approved) + " animals");
-		out_of_time_text.setPosition(window.getSize().x / 2 - out_of_time_text.getGlobalBounds().width / 2, 20);
-
-		
-
-		window.draw(out_of_time_text);
+		is_dead = true;
+		is_running = false;
+		timer_active = false;
+		show_timer = false;
 	}
 
+
 }
+
+
+
+
+
+
+
+
+
 
 
 
