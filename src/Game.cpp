@@ -86,13 +86,14 @@ void Game::render()
 		drawStamps();
 		drawPlayerLives();
 		drawFloodGauge();
-		window.draw(timer_text);
+		
 
 		
 		if (show_overlay)
 		{
 
-			endOfDay();
+			drawEndOfDay();
+			
 
 		}
 
@@ -392,6 +393,7 @@ void Game::drawWorld()
 				
 	window.draw(game_background);
 	window.draw(main_game_text);
+	window.draw(timer_text);
 
 
 }
@@ -435,6 +437,14 @@ void Game::drawFloodGauge()
 
 }
 
+void Game::drawEndOfDay()
+{
+
+	window.draw(overlay);
+	window.draw(end_of_day_text);
+	window.draw(end_of_day_info_text);
+
+}
 
 
 
@@ -697,7 +707,7 @@ void Game::initialiseGameScreen()
 void Game::initialiseGameTimer()
 {
 
-	game_duration = sf::seconds(2);
+	game_duration = sf::seconds(30);
 	timer_text.setFont(dead_font);
 	timer_text.setCharacterSize(50);
 	timer_text.setFillColor(sf::Color::Black);
@@ -781,19 +791,20 @@ void Game::initialiseOverlay()
 void Game::initialiseEndOfDayFont()
 {
 
-	end_of_day_text.setFont(dead_font);
-	end_of_day_text.setCharacterSize(100);
+	end_of_day_text.setFont(menu_font);
+	end_of_day_text.setCharacterSize(150);
+	end_of_day_text.setLetterSpacing(1);
 	end_of_day_text.setPosition(
-		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 30);
+		window.getSize().x / 2 - 580 - end_of_day_text.getGlobalBounds().width / 2, 230);
 
+	end_of_day_info_text.setFont(menu_font);
+	end_of_day_info_text.setCharacterSize(100);	
+	end_of_day_info_text.setLetterSpacing(1);
+	end_of_day_info_text.setPosition(
+		window.getSize().x / 2 - 580 - end_of_day_text.getGlobalBounds().width / 2, 430);
 }
 
-void Game::updateEndofDayText()
-{
 
-	end_of_day_text.setString("End of day " + std::to_string(current_day));
-
-}
 
 
 // - - - - - - - - - - - - - Spawn new animal - - - - - - - - - - - - -
@@ -921,8 +932,10 @@ void Game::gameTimer()
 			"Time: " + std::to_string(std::max(remainingSeconds, 0)));
 
 		//pauses flood timer when overlay is showing 
+		// increments the day by 1 in the overlay 
 		if (remaining <= sf::Time::Zero)
 		{
+
 			is_running = false;
 			show_overlay = true;
 			updateEndofDayText();
@@ -937,22 +950,14 @@ void Game::startNewDay()
 	//restarts game clock 
 	is_running = true;
 	show_overlay = false;
-	game_duration = sf::seconds(2);
+	game_duration = sf::seconds(30);
 	game_clock.restart();
 	current_day++;
 
 
 }
 
-void Game::endOfDay()
-{
-	
-	window.draw(overlay);
-	window.draw(end_of_day_text);
-	
 
-	
-}
 
 
 
@@ -1087,7 +1092,7 @@ void Game::restartGame()
 	show_timer = true;
 	flood_timer = 0.f;
 	game_clock.restart();
-	game_duration = sf::seconds(45);
+	game_duration = sf::seconds(30);
 
 }
 
@@ -1096,16 +1101,26 @@ void Game::checkPlayerDead()
 
 	if (player_lives <= 0 && !is_dead)
 	{
+
 		is_dead = true;
 		is_running = false;
 		timer_active = false;
 		show_timer = false;
+		current_day = 1;
+		passports_approved = 0;
+
 	}
 
 
 }
 
+void Game::updateEndofDayText()
+{
 
+	end_of_day_text.setString("End of day " + std::to_string(current_day));
+	end_of_day_info_text.setString("Animals aboard the Ark : " + std::to_string(passports_approved));
+
+}
 
 
 

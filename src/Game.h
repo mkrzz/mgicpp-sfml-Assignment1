@@ -37,6 +37,7 @@ class Game
   sf::Text out_of_time_text;
   sf::Text timer_text;
   sf::Text end_of_day_text;
+  sf::Text end_of_day_info_text;
 
   sf::Clock game_clock;
   sf::Time game_duration;
@@ -141,7 +142,7 @@ class Game
   void initialiseGameTimer();
   void gameTimer();
   void startNewDay();
-  void endOfDay();
+  void drawEndOfDay();
   void initialiseOverlay();
   void initialiseEndOfDayFont();
   void updateEndofDayText();
