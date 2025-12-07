@@ -60,6 +60,7 @@ void Game::update(float dt)
 		floodTimer(dt);
 		checkPlayerDead();
 		gameTimer();
+
 		
 	}
 
@@ -81,11 +82,13 @@ void Game::render()
 
 
 		drawWorld();
+		drawFloodGauge();
+		drawPlayerLives();
 		drawSprites();
 		drawButtons();
 		drawStamps();
-		drawPlayerLives();
-		drawFloodGauge();
+		
+		
 		
 
 		
@@ -349,7 +352,7 @@ void Game::drawPlayerLives()
 	for (int i = 0; i < player_lives; ++i)
 	{
 
-		lives.setPosition(100 + i * 70, 300);
+		lives.setPosition(345 + i * 70, 490);
 		window.draw(lives);
 
 	}
@@ -636,14 +639,14 @@ void Game::initialiseFloodGauge()
 {
 	flood_gauge.setSize(sf::Vector2f(200.f, 25.f));
 	flood_gauge.setFillColor(sf::Color::Blue);
-	flood_gauge.setPosition(20.f, 20.f);
+	/*flood_gauge.setPosition(20.f, 300.f);*/
 }
 
 void Game::initialiseMenu()
 {
 
 	//menu texture
-	if (!menu_background_texture.loadFromFile("../Data/Images/Menu_screen_01.png"))
+	if (!menu_background_texture.loadFromFile("../Data/Images/Menu_screen_02.png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
@@ -665,7 +668,8 @@ void Game::initialisePlayerLives()
 
 	}
 	lives.setTexture(lives_texture);
-	lives.setScale(1.0f, 1.0f);
+	lives.setScale(1.8f, 1.8f);
+	
 
 	dead_text.setFont(main_game_font);
 	dead_text.setCharacterSize(90);
@@ -693,7 +697,7 @@ void Game::initialisePlayAgainFont()
 
 void Game::initialiseGameScreen()
 {
-	if (!game_background_texture.loadFromFile("../Data/Images/Stock_Images/Artboard 1.png"))
+	if (!game_background_texture.loadFromFile("../Data/Images/Game_screen_02.png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
@@ -707,7 +711,7 @@ void Game::initialiseGameScreen()
 void Game::initialiseGameTimer()
 {
 
-	game_duration = sf::seconds(2);
+	game_duration = sf::seconds(30);
 	timer_text.setFont(dead_font);
 	timer_text.setCharacterSize(50);
 	timer_text.setFillColor(sf::Color::Black);
@@ -730,7 +734,7 @@ void Game::initialiseMainGameFont()
 void Game::initialiseMenuFonts()
 {
 	// menu font file
-	if (!menu_font.loadFromFile("../Data/Fonts/VacationPostcardNF.ttf"))
+	if (!menu_font.loadFromFile("../Data/Fonts/PressStart2P-Regular.ttf"))
 	{
 		std::cout << "Font did not load";
 	}
@@ -745,35 +749,35 @@ void Game::initialiseMenuFonts()
 	// menu title text
 	menu_text.setFont(menu_font);
 	menu_text.setString("Ark Admission");
-	menu_text.setCharacterSize(200);
-	menu_text.setLetterSpacing(2);
-	menu_text.setFillColor(sf::Color::Black);
-	menu_text.setOutlineColor(sf::Color(185, 180, 125, 255));
-	menu_text.setOutlineThickness(3);
+	menu_text.setCharacterSize(90);
+	menu_text.setLetterSpacing(1.5);
+	menu_text.setFillColor(sf::Color(185, 180, 125, 255));
+	menu_text.setOutlineColor(sf::Color::Black);
+	menu_text.setOutlineThickness(10);
 	menu_text.setPosition(
-		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 30);
+		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 160);
 
 	// play text in menu
 	play_text.setFont(menu_font);
-	play_text.setString("PLAY");
-	play_text.setCharacterSize(130);
+	play_text.setString("play");
+	play_text.setCharacterSize(50);
 	play_text.setLetterSpacing(1);
 	play_text.setFillColor(sf::Color::Black);
 	play_text.setOutlineColor(sf::Color::White);
 	play_text.setOutlineThickness(2);
 	play_text.setPosition(
-		window.getSize().x / 2 - play_text.getGlobalBounds().width / 2, 290);
+		window.getSize().x / 2 - play_text.getGlobalBounds().width / 2, 635);
 
 	// quit text in menu
 	quit_text.setFont(menu_font);
 	quit_text.setString("quit");
-	quit_text.setCharacterSize(130);
+	quit_text.setCharacterSize(50);
 	quit_text.setLetterSpacing(1);
 	quit_text.setFillColor(sf::Color::White);
 	quit_text.setOutlineColor(sf::Color::Black);
 	quit_text.setOutlineThickness(2);
 	quit_text.setPosition(
-		window.getSize().x / 2 - quit_text.getGlobalBounds().width / 2, 435);
+		window.getSize().x / 2 - quit_text.getGlobalBounds().width / 2,735);
 
 
 }
@@ -795,13 +799,13 @@ void Game::initialiseOverlay()
 void Game::initialiseEndOfDayFont()
 {
 
-	end_of_day_text.setFont(menu_font);
+	end_of_day_text.setFont(main_game_font);
 	end_of_day_text.setCharacterSize(150);
 	end_of_day_text.setLetterSpacing(2);
 	end_of_day_text.setPosition(
 		window.getSize().x / 2 - 580 - end_of_day_text.getGlobalBounds().width / 2, 230);
 
-	end_of_day_info_text.setFont(menu_font);
+	end_of_day_info_text.setFont(main_game_font);
 	end_of_day_info_text.setCharacterSize(100);	
 	end_of_day_info_text.setLetterSpacing(1);
 	end_of_day_info_text.setPosition(
@@ -842,8 +846,8 @@ void Game::newAnimal()
 		
 
 	character->setTexture(animals[animal_index], true);
-	character->setScale(.33, .33);
-	character->setPosition(window.getSize().x / 10 + 35, window.getSize().y / 11 + 40);
+	character->setScale(.35, .35);
+	character->setPosition(360, 270);
 
 	passport->setTexture(passports[passport_index]);
 	passport->setScale(1.f, 1.f);
@@ -910,14 +914,14 @@ void Game::floodTimer(float dt)
 
 	// converts timer to control max percentage of gauge (the bars width)
 	float percent = flood_timer / flood_max_timer;
-	float max_height = 400.0f;
+	float max_height = 550.0f;
 	float current_height = max_height * percent;
 
 	// sets max size of gauge
-	flood_gauge.setSize(sf::Vector2f(500.f, current_height));
+	flood_gauge.setSize(sf::Vector2f(55.f, current_height));
 
 	// anchors bar from the bottom so bar rises upwards
-	flood_gauge.setPosition(50, 600 - current_height);
+	flood_gauge.setPosition(938, 820 - current_height);
 
 
 }
@@ -974,9 +978,10 @@ void Game::passportApprovedText()
 	
 
 	main_game_text.setFont(main_game_font);
-	main_game_text.setString("PASSPORT APPROVED - You may board the Ark\n");
-	main_game_text.setCharacterSize(50);
-	main_game_text.setPosition(window.getSize().x / 2 - main_game_text.getGlobalBounds().width / 2, 20);
+	main_game_text.setString("PASSPORT APPROVED\n");
+	main_game_text.setCharacterSize(60);
+	main_game_text.setLetterSpacing(1);
+	main_game_text.setPosition(232, 75);
 	main_game_text.setFillColor(sf::Color::Black);
 
 
@@ -986,9 +991,10 @@ void Game::passportApprovedText()
 void Game::passportDeniedText()
 {
 	main_game_text.setFont(main_game_font);
-	main_game_text.setString("PASSPORT DENIED!\n");
-	main_game_text.setCharacterSize(50);
-	main_game_text.setPosition(window.getSize().x / 2 - main_game_text.getGlobalBounds().width / 2, 20);
+	main_game_text.setString("PASSPORT DENIED\n");
+	main_game_text.setCharacterSize(60);
+	main_game_text.setLetterSpacing(1);
+	main_game_text.setPosition(262, 75);
 	main_game_text.setFillColor(sf::Color::Black);
 	
 }
@@ -996,9 +1002,10 @@ void Game::passportDeniedText()
 void Game::rejectedValidPassportText()
 {
 	main_game_text.setFont(main_game_font);
-	main_game_text.setString("VIOLATION - You rejected a valid passport\n\n");
-	main_game_text.setCharacterSize(50);
-	main_game_text.setPosition(window.getSize().x / 2 - main_game_text.getGlobalBounds().width / 2, 20);
+	main_game_text.setString("VIOLATION - You rejected a valid passport\n");
+	main_game_text.setCharacterSize(30);
+	main_game_text.setLetterSpacing(1);
+	main_game_text.setPosition(215, 90);
 	main_game_text.setFillColor(sf::Color::Black);
 	
 }
@@ -1008,8 +1015,9 @@ void Game::passportDidNotMatchText()
 
 	main_game_text.setFont(main_game_font);
 	main_game_text.setString("VIOLATION - Passport did not match!\n");
-	main_game_text.setCharacterSize(50);
-	main_game_text.setPosition(window.getSize().x / 2 - main_game_text.getGlobalBounds().width / 2, 20);
+	main_game_text.setCharacterSize(30);
+	main_game_text.setLetterSpacing(1);
+	main_game_text.setPosition(242, 90);
 	main_game_text.setFillColor(sf::Color::Black);
 	
 }

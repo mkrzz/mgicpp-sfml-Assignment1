@@ -57,7 +57,7 @@ class Game
   sf::RectangleShape overlay_rect;
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
-  float flood_max_timer = 60.0f * 5;
+  float flood_max_timer = 60.0f * 2;
   float day_timer = 0.f;
 
   sf::Sprite* dragged = nullptr;
@@ -80,7 +80,7 @@ class Game
   sf::Sprite lives;
   sf::Texture lives_texture;
 
-  int player_lives = 1;
+  int player_lives = 3;
   int passports_approved = 0;
   int passports_approved_illegally = 0;
   int current_day = 1;
