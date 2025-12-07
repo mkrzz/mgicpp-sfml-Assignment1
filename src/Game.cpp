@@ -461,10 +461,10 @@ void Game::toggleMenuSelection()
 	{
 
 		play_text.setString("play");
-		play_text.setFillColor(sf::Color::White);
-		play_text.setOutlineColor(sf::Color::Black);
-		quit_text.setFillColor(sf::Color::Black);
-		quit_text.setOutlineColor(sf::Color::White);
+		play_text.setFillColor(sf::Color::Black);
+		play_text.setOutlineColor(sf::Color::White);
+		quit_text.setFillColor(sf::Color::White);
+		quit_text.setOutlineColor(sf::Color::Black);
 		quit_text.setString("quit");
 
 	}
@@ -473,10 +473,10 @@ void Game::toggleMenuSelection()
 	{
 
 		play_text.setString("play");
-		play_text.setFillColor(sf::Color::Black);
-		play_text.setOutlineColor(sf::Color::White);
-		quit_text.setFillColor(sf::Color::White);
-		quit_text.setOutlineColor(sf::Color::Black);
+		play_text.setFillColor(sf::Color::White);
+		play_text.setOutlineColor(sf::Color::Black);
+		quit_text.setFillColor(sf::Color::Black);
+		quit_text.setOutlineColor(sf::Color::White);
 		quit_text.setString("quit");
 		 
 	}
@@ -643,14 +643,14 @@ void Game::initialiseMenu()
 {
 
 	//menu texture
-	if (!menu_background_texture.loadFromFile("../Data/Images/Stock_Images/Ark-p.png"))
+	if (!menu_background_texture.loadFromFile("../Data/Images/Menu_screen_01.png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
 
-	/*menu_background.setTexture(menu_background_texture);
-	menu_background.setScale(.16, .16);
-	menu_background.setPosition(150, 280);*/
+	menu_background.setTexture(menu_background_texture);
+	/*menu_background.setScale(0, 0);*/
+	menu_background.setPosition(0, 0);
 
 
 }
@@ -744,33 +744,33 @@ void Game::initialiseMenuFonts()
 
 	// menu title text
 	menu_text.setFont(menu_font);
-	menu_text.setString("Passport Please");
+	menu_text.setString("Ark Admission");
 	menu_text.setCharacterSize(200);
-	/*menu_text.setLetterSpacing(1);*/
+	menu_text.setLetterSpacing(2);
 	menu_text.setFillColor(sf::Color::Black);
-	/*menu_text.setOutlineColor(sf::Color::White);*/
-	/*menu_text.setOutlineThickness(3);*/
+	menu_text.setOutlineColor(sf::Color(185, 180, 125, 255));
+	menu_text.setOutlineThickness(3);
 	menu_text.setPosition(
 		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 30);
 
 	// play text in menu
-	play_text.setFont(play_font);
+	play_text.setFont(menu_font);
 	play_text.setString("PLAY");
-	play_text.setCharacterSize(150);
+	play_text.setCharacterSize(130);
 	play_text.setLetterSpacing(1);
-	play_text.setFillColor(sf::Color::White);
-	play_text.setOutlineColor(sf::Color::Black);
+	play_text.setFillColor(sf::Color::Black);
+	play_text.setOutlineColor(sf::Color::White);
 	play_text.setOutlineThickness(2);
 	play_text.setPosition(
 		window.getSize().x / 2 - play_text.getGlobalBounds().width / 2, 290);
 
 	// quit text in menu
-	quit_text.setFont(play_font);
+	quit_text.setFont(menu_font);
 	quit_text.setString("quit");
-	quit_text.setCharacterSize(150);
+	quit_text.setCharacterSize(130);
 	quit_text.setLetterSpacing(1);
-	quit_text.setFillColor(sf::Color::Black);
-	quit_text.setOutlineColor(sf::Color::White);
+	quit_text.setFillColor(sf::Color::White);
+	quit_text.setOutlineColor(sf::Color::Black);
 	quit_text.setOutlineThickness(2);
 	quit_text.setPosition(
 		window.getSize().x / 2 - quit_text.getGlobalBounds().width / 2, 435);
@@ -797,7 +797,7 @@ void Game::initialiseEndOfDayFont()
 
 	end_of_day_text.setFont(menu_font);
 	end_of_day_text.setCharacterSize(150);
-	end_of_day_text.setLetterSpacing(1);
+	end_of_day_text.setLetterSpacing(2);
 	end_of_day_text.setPosition(
 		window.getSize().x / 2 - 580 - end_of_day_text.getGlobalBounds().width / 2, 230);
 
