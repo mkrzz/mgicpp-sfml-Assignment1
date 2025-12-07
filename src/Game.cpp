@@ -406,19 +406,22 @@ void Game::drawFloodHasRisenText()
 	if (flood_timer >= flood_max_timer)
 	{
 
-		// adds a transparant-ish overlay when player dies
+		// adds a transparent-ish overlay when player dies
 		sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
 		overlay.setFillColor(sf::Color(0, 0, 0, 200));
-		window.draw(overlay);
+		
+		window.draw(overlay);		
+		window.draw(overlay_rect);
+		window.draw(out_of_time_text);
 
 
-		out_of_time_text.setFont(dead_font);
+		out_of_time_text.setFont(main_game_font);
 		out_of_time_text.setCharacterSize(100);
 		out_of_time_text.setFillColor(sf::Color::White);
-		out_of_time_text.setString("The flood has risen\n You saved " + std::to_string(passports_approved) + " animals");
-		out_of_time_text.setPosition(window.getSize().x / 2 - out_of_time_text.getGlobalBounds().width / 2, 20);
+		out_of_time_text.setString("The flood has risen\nYou saved " + std::to_string(passports_approved) + " animals");
+		out_of_time_text.setPosition(window.getSize().x / 2 - out_of_time_text.getGlobalBounds().width / 2, 220);
 
-		window.draw(out_of_time_text);
+		
 
 	}
 
@@ -697,7 +700,7 @@ void Game::initialisePlayAgainFont()
 
 void Game::initialiseGameScreen()
 {
-	if (!game_background_texture.loadFromFile("../Data/Images/Game_screen_02.png"))
+	if (!game_background_texture.loadFromFile("../Data/Images/Game_screen_04.png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
@@ -851,7 +854,7 @@ void Game::newAnimal()
 
 	passport->setTexture(passports[passport_index]);
 	passport->setScale(1.f, 1.f);
-	passport->setPosition(window.getSize().x / 2 + 10, window.getSize().y / 3 - 190);
+	passport->setPosition(window.getSize().x / 2 + 150, window.getSize().y / 3 - 110);
 	
 
 
@@ -921,7 +924,7 @@ void Game::floodTimer(float dt)
 	flood_gauge.setSize(sf::Vector2f(55.f, current_height));
 
 	// anchors bar from the bottom so bar rises upwards
-	flood_gauge.setPosition(938, 820 - current_height);
+	flood_gauge.setPosition(939, 820 - current_height);
 
 
 }
