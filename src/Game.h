@@ -80,7 +80,7 @@ class Game
   sf::Sprite lives;
   sf::Texture lives_texture;
 
-  int player_lives = 3;
+  int player_lives = 1;
   int passports_approved = 0;
   int passports_approved_illegally = 0;
   int current_day = 1;

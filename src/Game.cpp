@@ -363,9 +363,8 @@ void Game::drawNoLivesText()
 	sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
 	overlay.setFillColor(sf::Color(0, 0, 0, 200));
 	
-	window.draw(overlay);
-	
-
+	window.draw(overlay);	
+	window.draw(overlay_rect);
 	window.draw(dead_text);
 	window.draw(play_again_text);
 
@@ -668,18 +667,18 @@ void Game::initialisePlayerLives()
 	lives.setTexture(lives_texture);
 	lives.setScale(1.0f, 1.0f);
 
-	dead_text.setFont(dead_font);
-	dead_text.setCharacterSize(50);
-	dead_text.setFillColor(sf::Color::Black);
+	dead_text.setFont(main_game_font);
+	dead_text.setCharacterSize(90);
+	dead_text.setFillColor(sf::Color::White);
 	dead_text.setString("You have made too many errors\n");
-	dead_text.setPosition(window.getSize().x / 2 - dead_text.getGlobalBounds().width / 2, 20);
+	dead_text.setPosition(window.getSize().x / 2  - dead_text.getGlobalBounds().width / 2, 230);
 
 
-	play_again_text.setFont(dead_font);
+	play_again_text.setFont(main_game_font);
 	play_again_text.setCharacterSize(50);
-	play_again_text.setFillColor(sf::Color::Black);
-	play_again_text.setString("Play again? \n Press enter");
-	play_again_text.setPosition(window.getSize().x / 2 - play_again_text.getGlobalBounds().width / 2, 50);
+	play_again_text.setFillColor(sf::Color::White);
+	play_again_text.setString("Play again? \nPress enter");
+	play_again_text.setPosition(window.getSize().x / 2  - play_again_text.getGlobalBounds().width / 2, 430);
 
 }
 
