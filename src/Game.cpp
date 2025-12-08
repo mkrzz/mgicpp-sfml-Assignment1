@@ -41,7 +41,7 @@ bool Game::init()
 	initialiseGameScreen();
 	initialiseGameTimer();
 	initialiseOverlay();
-	playBackgroundSound();
+	initialiseSound();
 	playAnimalSounds();
 	newAnimal();
 	
@@ -514,15 +514,15 @@ void Game::handleMenuSelection()
 		is_running = true;
 		in_menu = false;
 		thunderclap.play();
+		menu_music.stop();
+		game_music.play();
+
 
 		game_clock.restart();
 		show_overlay = false;
 		time_up = false;
 		
 		
-		
-		
-
 	}
 	else
 	{
@@ -1022,6 +1022,7 @@ void Game::gameTimer()
 			is_running = false;
 			show_overlay = true;
 			updateEndofDayText();
+			horn.play();
 			
 		}
 	}
@@ -1221,11 +1222,39 @@ void Game::checkPlayerDead()
 
 
 
+
 // - - - - - - - - - - - - - Restart Game - - - - - - - - - - - - -
 
 
 
-void Game::playBackgroundSound()
+void Game::playAnimalSounds()
+{
+
+	//sound buffer index loaded to match the animal index so the animal plays the correct sound
+	soundBuffers.resize(5);
+	sounds.resize(5);
+
+	soundBuffers[0].loadFromFile("../Data/Sound/bear.wav");
+	soundBuffers[1].loadFromFile("../Data/Sound/frog.wav");
+	soundBuffers[2].loadFromFile("../Data/Sound/pig.wav");
+	soundBuffers[3].loadFromFile("../Data/Sound/Seagull.wav");
+	soundBuffers[4].loadFromFile("../Data/Sound/wolf.wav");
+
+	// turned bear sound down
+	sounds[0].setVolume(50.f); 
+	// turned wolf sound down
+	sounds[4].setVolume(40.f); 
+
+	for (int i = 0; i < 5; i++)
+	{
+		sounds[i].setBuffer(soundBuffers[i]);
+	}
+
+
+
+}
+
+void Game::initialiseSound()
 {
 
 	if (!thunderstorm_buffer.loadFromFile("../Data/Sound/Thunderstorm_sound.wav"))
@@ -1248,52 +1277,44 @@ void Game::playBackgroundSound()
 		std::cout << "Sound did not load";
 	}
 
+	if (!menu_music_buffer.loadFromFile("../Data/Sound/menu_music.wav"))
+	{
+		std::cout << "Sound did not load";
+	}
+
+	if (!game_music_buffer.loadFromFile("../Data/Sound/game_music_2.wav"))
+	{
+		std::cout << "Sound did not load";
+	}
+
+	if (!horn_buffer.loadFromFile("../Data/Sound/Horn.wav"))
+	{
+		std::cout << "Sound did not load";
+	}
+
 	lose_life.setBuffer(lose_life_buffer);
 	thunderclap.setBuffer(thunderclap_buffer);
 	declined.setBuffer(declined_buffer);
-
 	thunderstorm.setBuffer(thunderstorm_buffer);
-	thunderstorm.play();
+	menu_music.setBuffer(menu_music_buffer);
+	game_music.setBuffer(game_music_buffer);
+	horn.setBuffer(horn_buffer);
+
+	game_music.setLoop(true);
+	game_music.setVolume(10.f);
+
+	menu_music.setLoop(true);	
+	menu_music.setVolume(10.f);
+	menu_music.play();
+	
 	thunderstorm.setLoop(true);
-	thunderstorm.setVolume(75);
+	thunderstorm.setVolume(7.f);
+	thunderstorm.play();
 
-	bear.setVolume(40);
-	pig.setVolume(50);
-	wolf.setVolume(50);
-
-}
-
-void Game::playAnimalSounds()
-{
-
-	//sound buffer index loaded to match the animal index so the animal plays the correct sound
-	soundBuffers.resize(5);
-	sounds.resize(5);
-
-	soundBuffers[0].loadFromFile("../Data/Sound/bear.wav");
-	soundBuffers[1].loadFromFile("../Data/Sound/frog.wav");
-	soundBuffers[2].loadFromFile("../Data/Sound/pig.wav");
-	soundBuffers[3].loadFromFile("../Data/Sound/Seagull.wav");
-	soundBuffers[4].loadFromFile("../Data/Sound/wolf.wav");
-	
-	for (int i = 0; i < 5; i++) 
-	{
-		sounds[i].setBuffer(soundBuffers[i]);
-	}
-
+	thunderclap.setVolume(0.f);
 	
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

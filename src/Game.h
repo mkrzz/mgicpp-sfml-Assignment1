@@ -102,6 +102,12 @@ class Game
   sf::Sound thunderclap;
   sf::SoundBuffer declined_buffer;
   sf::Sound declined;
+  sf::SoundBuffer menu_music_buffer;
+  sf::Sound menu_music;
+  sf::SoundBuffer game_music_buffer;
+  sf::Sound game_music;
+  sf::SoundBuffer horn_buffer;
+  sf::Sound horn;
 
   std::vector<sf::SoundBuffer> soundBuffers;
   std::vector<sf::Sound> sounds;
@@ -176,7 +182,7 @@ class Game
   void updateEndofDayText();
   void updateCurrentDayText();
   void initialiseCurrentDayText();
-  void playBackgroundSound();
+  void initialiseSound();
   void playAnimalSounds();
 
 
