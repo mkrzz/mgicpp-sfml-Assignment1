@@ -94,6 +94,8 @@ class Game
   sf::Sound seagull;
   sf::SoundBuffer wolf_buffer;
   sf::Sound wolf;
+  sf::SoundBuffer lose_life_buffer;
+  sf::Sound lose_life;
 
   std::vector<sf::SoundBuffer> soundBuffers;
   std::vector<sf::Sound> sounds;
@@ -170,6 +172,7 @@ class Game
   void initialiseCurrentDayText();
   void playBackgroundSound();
   void playAnimalSounds();
+
 
 
 };

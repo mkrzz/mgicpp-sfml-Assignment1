@@ -852,7 +852,26 @@ void Game::newAnimal()
 	stamp_pressed = false;
 
 	animal_index = rand() % 5;
-	passport_index = rand() % 5;
+	/*passport_index = rand() % 5;*/
+
+	// changes probability of matching passports to 60%
+	int chance = rand() % 100;
+
+	if (chance < 60) 
+	{  
+		passport_index = animal_index;
+	}
+	else 
+	{
+		
+		do
+		{
+			passport_index = rand() % 5;
+		} 
+		while (passport_index == animal_index);
+
+	}
+
 
 	if (animal_index == passport_index)
 	{
@@ -1085,7 +1104,7 @@ void Game::handlePassportTextChoice()
 			std::cout << "VIOLATION - Passport did not match!\n";
 			player_lives--;
 			passports_approved_illegally++;
-
+			lose_life.play();
 
 		}
 
@@ -1107,6 +1126,7 @@ void Game::handlePassportTextChoice()
 			rejectedValidPassportText();
 			std::cout << "VIOLATION - You rejected a valid passport\n";
 			player_lives--;
+			lose_life.play();
 
 
 		}
@@ -1176,6 +1196,14 @@ void Game::playBackgroundSound()
 		std::cout << "Sound did not load";
 	}
 
+	if (!lose_life_buffer.loadFromFile("../Data/Sound/Lose life.wav"))
+	{
+		std::cout << "Sound did not load";
+	}
+
+	lose_life.setBuffer(lose_life_buffer);
+	
+
 	thunderstorm.setBuffer(thunderstorm_buffer);
 	thunderstorm.play();
 	thunderstorm.setLoop(true);
@@ -1185,6 +1213,7 @@ void Game::playBackgroundSound()
 void Game::playAnimalSounds()
 {
 
+	//sound buffer index loaded to match the animal index so the animal plays the correct sound
 	soundBuffers.resize(5);
 	sounds.resize(5);
 
