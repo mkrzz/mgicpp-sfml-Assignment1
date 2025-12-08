@@ -597,20 +597,20 @@ void Game::initialisePassports()
 void Game::initialiseButtons()
 {
 
-	if (!accept_texture.loadFromFile("../Data/Images/Stamps/Approved_button_new.png"))
+	if (!accept_texture.loadFromFile("../Data/Images/Approved(new).png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!reject_texture.loadFromFile("../Data/Images/Stamps/Rejected_button_new.png"))
+	if (!reject_texture.loadFromFile("../Data/Images/rejected(new).png"))
 	{
 		std::cout << "image did not load";
 	}
 
 	accept_button.setTexture(accept_texture);
 	reject_button.setTexture(reject_texture);
-	accept_button.setScale(.7f, .7f);
-	reject_button.setScale(.7f, .7f);
+	accept_button.setScale(.4f, .4f);
+	reject_button.setScale(.4f, .4f);
 
 
 
@@ -631,8 +631,8 @@ void Game::initialiseStamps()
 
 	accept_stamp.setTexture(accept_stamp_texture);
 	reject_stamp.setTexture(reject_stamp_texture);
-	accept_stamp.setScale(.7f, .7f);
-	reject_stamp.setScale(.7f, .7f);
+	accept_stamp.setScale(.6f, .6f);
+	reject_stamp.setScale(.6f, .6f);
 
 	
 
@@ -651,7 +651,7 @@ void Game::initialiseMenu()
 {
 
 	//menu texture
-	if (!menu_background_texture.loadFromFile("../Data/Images/Menu_screen_02.png"))
+	if (!menu_background_texture.loadFromFile("../Data/Images/Menu_screen_02_Screen_effect.png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
@@ -702,7 +702,7 @@ void Game::initialisePlayAgainFont()
 
 void Game::initialiseGameScreen()
 {
-	if (!game_background_texture.loadFromFile("../Data/Images/Game_screen_05.png"))
+	if (!game_background_texture.loadFromFile("../Data/Images/Game_screen_06(final).png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
@@ -717,10 +717,12 @@ void Game::initialiseGameTimer()
 {
 
 	game_duration = sf::seconds(30);
-	timer_text.setFont(dead_font);
+	timer_text.setFont(play_font);
 	timer_text.setCharacterSize(50);
+	timer_text.setOutlineColor(sf::Color(185, 180, 125, 255));
+	timer_text.setOutlineThickness(1);
 	timer_text.setFillColor(sf::Color::Black);
-	timer_text.setPosition(window.getSize().x - 220, 10);
+	timer_text.setPosition(943, 65);
 	/*timer_text.setString("Time: 2");*/
 
 	
@@ -825,7 +827,7 @@ void Game::initialiseCurrentDayText()
 	current_day_text.setFillColor(sf::Color::Black);
 	current_day_text.setCharacterSize(80);
 	current_day_text.setLetterSpacing(1);
-	current_day_text.setPosition(50, 342);
+	current_day_text.setPosition(50, 282);
 
 }
 
@@ -867,7 +869,7 @@ void Game::newAnimal()
 
 	passport->setTexture(passports[passport_index]);
 	passport->setScale(1.f, 1.f);
-	passport->setPosition(window.getSize().x / 2 + 150, window.getSize().y / 3 - 110);
+	passport->setPosition(window.getSize().x / 2 + 180, window.getSize().y / 3 - 150);
 	
 
 
@@ -934,7 +936,7 @@ void Game::floodTimer(float dt)
 	float current_height = max_height * percent;
 
 	// sets max size of gauge
-	flood_gauge.setSize(sf::Vector2f(55.f, current_height));
+	flood_gauge.setSize(sf::Vector2f(60.f, current_height));
 
 	// anchors bar from the bottom so bar rises upwards
 	flood_gauge.setPosition(939, 820 - current_height);
@@ -953,7 +955,7 @@ void Game::gameTimer()
 
 		int remainingSeconds = static_cast<int>(remaining.asSeconds());
 		timer_text.setString(
-			"Time: " + std::to_string(std::max(remainingSeconds, 0)));
+			std::to_string(std::max(remainingSeconds, 0)));
 
 		updateCurrentDayText();
 
