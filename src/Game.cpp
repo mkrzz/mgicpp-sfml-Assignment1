@@ -702,7 +702,7 @@ void Game::initialisePlayAgainFont()
 
 void Game::initialiseGameScreen()
 {
-	if (!game_background_texture.loadFromFile("../Data/Images/Game_screen_04.png"))
+	if (!game_background_texture.loadFromFile("../Data/Images/Game_screen_05.png"))
 	{
 		std::cout << "background texture did not load \n";
 	}
@@ -745,7 +745,7 @@ void Game::initialiseMenuFonts()
 	}
 
 	// play font file
-	if (!play_font.loadFromFile("../Data/Fonts/Moon Flower.ttf"))
+	if (!play_font.loadFromFile("../Data/Fonts/CoalhandLuke TRIAL.ttf"))
 	{
 		std::cout << "Font did not load";
 	}
@@ -817,6 +817,17 @@ void Game::initialiseEndOfDayFont()
 		window.getSize().x / 2 - 580 - end_of_day_text.getGlobalBounds().width / 2, 430);
 }
 
+void Game::initialiseCurrentDayText()
+{
+
+
+	current_day_text.setFont(play_font);
+	current_day_text.setFillColor(sf::Color::Black);
+	current_day_text.setCharacterSize(80);
+	current_day_text.setLetterSpacing(1);
+	current_day_text.setPosition(50, 342);
+
+}
 
 
 
@@ -889,7 +900,7 @@ void Game::dragSprite(sf::Sprite* sprite)
 
 
 
-// - - - - - - - - - - - - - Timer - - - - - - - - - - - - -
+// - - - - - - - - - - - - - Update / Timer - - - - - - - - - - - - -
 
 
 
@@ -972,10 +983,24 @@ void Game::startNewDay()
 
 }
 
+void Game::updateEndofDayText()
+{
+
+	end_of_day_text.setString("End of day " + std::to_string(current_day));
+	end_of_day_info_text.setString("Animals aboard the Ark : " + std::to_string(passports_approved));
+
+}
+
+void Game::updateCurrentDayText()
+{
+	current_day_text.setString(std::to_string(current_day));
+}
+
 
 
 
 // - - - - - - - - - - - - - Passport - - - - - - - - - - - - -
+
 
 
 
@@ -1093,7 +1118,9 @@ void Game::handlePassportTextChoice()
 
 
 
+
 // - - - - - - - - - - - - - Restart Game - - - - - - - - - - - - -
+
 
 
 
@@ -1109,6 +1136,7 @@ void Game::restartGame()
 	flood_timer = 0.f;
 	game_clock.restart();
 	game_duration = sf::seconds(30);
+	current_day = 1;
 
 }
 
@@ -1130,26 +1158,10 @@ void Game::checkPlayerDead()
 
 }
 
-void Game::updateEndofDayText()
-{
 
-	end_of_day_text.setString("End of day " + std::to_string(current_day));
-	end_of_day_info_text.setString("Animals aboard the Ark : " + std::to_string(passports_approved));
 
-}
 
-void Game::updateCurrentDayText()
-{
-	current_day_text.setString("Day\n" + std::to_string(current_day));
-}
 
-void Game::initialiseCurrentDayText()
-{
-	current_day_text.setFont(main_game_font);
-	current_day_text.setCharacterSize(100);
-	current_day_text.setLetterSpacing(1);
-	current_day_text.setPosition(100, 100);
-}
 
 
 
