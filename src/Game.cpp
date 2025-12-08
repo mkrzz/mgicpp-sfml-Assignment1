@@ -30,6 +30,7 @@ bool Game::init()
 	initialiseMainGameFont();
 	initialisePlayAgainFont();
 	initialiseEndOfDayFont();
+	initialiseCurrentDayText();
 	initialiseSprites();
 	initialiseAnimals();
 	initialiseButtons();
@@ -396,6 +397,7 @@ void Game::drawWorld()
 	window.draw(game_background);
 	window.draw(main_game_text);
 	window.draw(timer_text);
+	window.draw(current_day_text);
 
 
 }
@@ -942,6 +944,8 @@ void Game::gameTimer()
 		timer_text.setString(
 			"Time: " + std::to_string(std::max(remainingSeconds, 0)));
 
+		updateCurrentDayText();
+
 		//pauses flood timer when overlay is showing 
 		// increments the day by 1 in the overlay 
 		if (remaining <= sf::Time::Zero)
@@ -1132,6 +1136,19 @@ void Game::updateEndofDayText()
 	end_of_day_text.setString("End of day " + std::to_string(current_day));
 	end_of_day_info_text.setString("Animals aboard the Ark : " + std::to_string(passports_approved));
 
+}
+
+void Game::updateCurrentDayText()
+{
+	current_day_text.setString("Day\n" + std::to_string(current_day));
+}
+
+void Game::initialiseCurrentDayText()
+{
+	current_day_text.setFont(main_game_font);
+	current_day_text.setCharacterSize(100);
+	current_day_text.setLetterSpacing(1);
+	current_day_text.setPosition(100, 100);
 }
 
 

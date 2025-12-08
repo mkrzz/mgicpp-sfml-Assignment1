@@ -38,6 +38,7 @@ class Game
   sf::Text timer_text;
   sf::Text end_of_day_text;
   sf::Text end_of_day_info_text;
+  sf::Text current_day_text;
 
   sf::Clock game_clock;
   sf::Time game_duration;
@@ -57,7 +58,7 @@ class Game
   sf::RectangleShape overlay_rect;
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
-  float flood_max_timer = 2.0f;
+  float flood_max_timer = 60.0f * 2;
   float day_timer = 0.f;
 
   sf::Sprite* dragged = nullptr;
@@ -147,7 +148,8 @@ class Game
   void initialiseOverlay();
   void initialiseEndOfDayFont();
   void updateEndofDayText();
-  
+  void updateCurrentDayText();
+  void initialiseCurrentDayText();
 
 
 };
