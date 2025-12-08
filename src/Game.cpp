@@ -502,6 +502,7 @@ void Game::handleMenuSelection()
 
 		is_running = true;
 		in_menu = false;
+		thunderclap.play();
 
 		game_clock.restart();
 		show_overlay = false;
@@ -1201,8 +1202,13 @@ void Game::playBackgroundSound()
 		std::cout << "Sound did not load";
 	}
 
+	if (!thunderclap_buffer.loadFromFile("../Data/Sound/Thunderclap.wav"))
+	{
+		std::cout << "Sound did not load";
+	}
+
 	lose_life.setBuffer(lose_life_buffer);
-	
+	thunderclap.setBuffer(thunderclap_buffer);
 
 	thunderstorm.setBuffer(thunderstorm_buffer);
 	thunderstorm.play();

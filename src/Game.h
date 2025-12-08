@@ -96,6 +96,8 @@ class Game
   sf::Sound wolf;
   sf::SoundBuffer lose_life_buffer;
   sf::Sound lose_life;
+  sf::SoundBuffer thunderclap_buffer;
+  sf::Sound thunderclap;
 
   std::vector<sf::SoundBuffer> soundBuffers;
   std::vector<sf::Sound> sounds;
