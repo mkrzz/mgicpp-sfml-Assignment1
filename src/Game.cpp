@@ -264,14 +264,19 @@ void Game::mouseButtonPressed(sf::Event event)
 	if (event.mouseButton.button == sf::Mouse::Right)
 	{
 
+		
+
 		sf::Vector2f mouse_position(event.mouseButton.x, event.mouseButton.y);
 		sf::Vector2i click = sf::Mouse::getPosition(window);
 		sf::Vector2f clickf = static_cast<sf::Vector2f>(click);
 
+
+		float spacing = 5.f;
+
 		// position of stamps relative to mouse position
-		accept_button.setPosition(mouse_position.x - 20 - accept_button.getGlobalBounds().width,
-			mouse_position.y - accept_button.getGlobalBounds().height / 2);
-		reject_button.setPosition(mouse_position.x + 20, mouse_position.y - reject_button.getGlobalBounds().height / 2);
+		accept_button.setPosition(mouse_position.x + 10.0f, mouse_position.y + 10.0f);
+
+		reject_button.setPosition(accept_button.getPosition().x, accept_button.getPosition().y + accept_button.getGlobalBounds().height + spacing);
 		
 		button_visability = true; 
 		
@@ -283,7 +288,7 @@ void Game::mouseButtonPressed(sf::Event event)
 void Game::mouseButtonReleased(sf::Event event)
 {
 
-	button_visability = false;
+	/*button_visability = false;*/
 
 	if (event.mouseButton.button == sf::Mouse::Left && dragged == passport)
 	{
@@ -422,6 +427,7 @@ void Game::drawFloodHasRisenText()
 		window.draw(overlay);		
 		window.draw(overlay_rect);
 		window.draw(out_of_time_text);
+		window.draw(play_again_text);
 
 
 		out_of_time_text.setFont(main_game_font);
@@ -458,6 +464,7 @@ void Game::drawEndOfDay()
 	window.draw(overlay_rect);
 	window.draw(end_of_day_text);
 	window.draw(end_of_day_info_text);
+	window.draw(start_next_day_text);
 
 }
 
@@ -476,10 +483,10 @@ void Game::toggleMenuSelection()
 	{
 
 		play_text.setString("play");
-		play_text.setFillColor(sf::Color::Black);
-		play_text.setOutlineColor(sf::Color::White);
-		quit_text.setFillColor(sf::Color::White);
-		quit_text.setOutlineColor(sf::Color::Black);
+		play_text.setFillColor(sf::Color::White);
+		play_text.setOutlineColor(sf::Color::Black);
+		quit_text.setFillColor(sf::Color::Black);
+		quit_text.setOutlineColor(sf::Color::White);
 		quit_text.setString("quit");
 
 	}
@@ -488,10 +495,10 @@ void Game::toggleMenuSelection()
 	{
 
 		play_text.setString("play");
-		play_text.setFillColor(sf::Color::White);
-		play_text.setOutlineColor(sf::Color::Black);
-		quit_text.setFillColor(sf::Color::Black);
-		quit_text.setOutlineColor(sf::Color::White);
+		play_text.setFillColor(sf::Color::Black);
+		play_text.setOutlineColor(sf::Color::White);
+		quit_text.setFillColor(sf::Color::White);
+		quit_text.setOutlineColor(sf::Color::Black);
 		quit_text.setString("quit");
 		 
 	}
@@ -605,20 +612,20 @@ void Game::initialisePassports()
 void Game::initialiseButtons()
 {
 
-	if (!accept_texture.loadFromFile("../Data/Images/Approved(new).png"))
+	if (!accept_texture.loadFromFile("../Data/Images/Stamps/Approved.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!reject_texture.loadFromFile("../Data/Images/rejected(new).png"))
+	if (!reject_texture.loadFromFile("../Data/Images/Stamps/Rejected.png"))
 	{
 		std::cout << "image did not load";
 	}
 
 	accept_button.setTexture(accept_texture);
 	reject_button.setTexture(reject_texture);
-	accept_button.setScale(.4f, .4f);
-	reject_button.setScale(.4f, .4f);
+	accept_button.setScale(.6f, .6f);
+	reject_button.setScale(.6f, .6f);
 
 
 
@@ -695,7 +702,7 @@ void Game::initialisePlayerLives()
 	play_again_text.setCharacterSize(50);
 	play_again_text.setFillColor(sf::Color::White);
 	play_again_text.setString("Play again? \nPress enter");
-	play_again_text.setPosition(window.getSize().x / 2  - play_again_text.getGlobalBounds().width / 2, 430);
+	play_again_text.setPosition(window.getSize().x / 2  - play_again_text.getGlobalBounds().width / 2, 630);
 
 }
 
@@ -725,7 +732,7 @@ void Game::initialiseGameTimer()
 {
 
 	game_duration = sf::seconds(30);
-	timer_text.setFont(play_font);
+	timer_text.setFont(clock_font);
 	timer_text.setCharacterSize(50);
 	timer_text.setOutlineColor(sf::Color(185, 180, 125, 255));
 	timer_text.setOutlineThickness(1);
@@ -749,47 +756,52 @@ void Game::initialiseMainGameFont()
 void Game::initialiseMenuFonts()
 {
 	// menu font file
-	if (!menu_font.loadFromFile("../Data/Fonts/PressStart2P-Regular.ttf"))
+	if (!menu_font.loadFromFile("../Data/Fonts/VacationPostcardNF.ttf"))
 	{
 		std::cout << "Font did not load";
 	}
 
 	// play font file
-	if (!play_font.loadFromFile("../Data/Fonts/CoalhandLuke TRIAL.ttf"))
+	if (!play_font.loadFromFile("../Data/Fonts/PressStart2P-Regular.ttf"))
 	{
 		std::cout << "Font did not load";
 	}
 
 
+	if (!clock_font.loadFromFile("../Data/Fonts/CoalhandLuke TRIAL.ttf"))
+	{
+		std::cout << "Font did not load";
+	}
+
 	// menu title text
 	menu_text.setFont(menu_font);
 	menu_text.setString("Ark Admission");
-	menu_text.setCharacterSize(90);
-	menu_text.setLetterSpacing(1.5);
+	menu_text.setCharacterSize(180);
+	menu_text.setLetterSpacing(2);
 	menu_text.setFillColor(sf::Color(185, 180, 125, 255));
 	menu_text.setOutlineColor(sf::Color::Black);
-	menu_text.setOutlineThickness(10);
+	menu_text.setOutlineThickness(5);
 	menu_text.setPosition(
 		window.getSize().x / 2 - menu_text.getGlobalBounds().width / 2, 160);
 
 	// play text in menu
-	play_text.setFont(menu_font);
+	play_text.setFont(play_font);
 	play_text.setString("play");
 	play_text.setCharacterSize(50);
 	play_text.setLetterSpacing(1);
-	play_text.setFillColor(sf::Color::Black);
-	play_text.setOutlineColor(sf::Color::White);
+	play_text.setFillColor(sf::Color::White);
+	play_text.setOutlineColor(sf::Color::Black);
 	play_text.setOutlineThickness(2);
 	play_text.setPosition(
 		window.getSize().x / 2 - play_text.getGlobalBounds().width / 2, 635);
 
 	// quit text in menu
-	quit_text.setFont(menu_font);
+	quit_text.setFont(play_font);
 	quit_text.setString("quit");
 	quit_text.setCharacterSize(50);
 	quit_text.setLetterSpacing(1);
-	quit_text.setFillColor(sf::Color::White);
-	quit_text.setOutlineColor(sf::Color::Black);
+	quit_text.setFillColor(sf::Color::Black);
+	quit_text.setOutlineColor(sf::Color::White);
 	quit_text.setOutlineThickness(2);
 	quit_text.setPosition(
 		window.getSize().x / 2 - quit_text.getGlobalBounds().width / 2,735);
@@ -802,16 +814,18 @@ void Game::initialiseOverlay()
 
 	// adds a transparantish overlay when player dies
 	overlay.setSize(sf::Vector2f(window.getSize()));
-	overlay.setFillColor(sf::Color(0, 0, 0, 200));
+	overlay.setFillColor(sf::Color(0, 0, 0, 80));
 	overlay_rect.setSize(sf::Vector2f(1300, 800));
-	overlay_rect.setFillColor(sf::Color(0, 0, 0, 100));
+	overlay_rect.setFillColor(sf::Color(0, 0, 0, 180));
+	overlay_rect.setOutlineColor(sf::Color::White);
+	overlay_rect.setOutlineThickness(1);
 	overlay_rect.setPosition(window.getSize().x / 2 - overlay_rect.getSize().x / 2,
 		window.getSize().y / 2 - overlay_rect.getSize().y / 2
 		);
 	
 }
 
-void Game::initialiseEndOfDayFont()
+void Game::initialiseEndOfDayFont()	
 {
 
 	end_of_day_text.setFont(main_game_font);
@@ -825,13 +839,22 @@ void Game::initialiseEndOfDayFont()
 	end_of_day_info_text.setLetterSpacing(1);
 	end_of_day_info_text.setPosition(
 		window.getSize().x / 2 - 580 - end_of_day_text.getGlobalBounds().width / 2, 430);
+
+	start_next_day_text.setFont(main_game_font);
+	start_next_day_text.setCharacterSize(50);
+	start_next_day_text.setLetterSpacing(2);
+	start_next_day_text.setString("Press enter to start the next day");
+	start_next_day_text.setPosition(window.getSize().x / 2 - 140 - start_next_day_text.getGlobalBounds().width / 2, 630);
+
+
+
 }
 
 void Game::initialiseCurrentDayText()
 {
 
 
-	current_day_text.setFont(play_font);
+	current_day_text.setFont(clock_font);
 	current_day_text.setFillColor(sf::Color::Black);
 	current_day_text.setCharacterSize(80);
 	current_day_text.setLetterSpacing(1);
@@ -1174,6 +1197,7 @@ void Game::restartGame()
 	game_clock.restart();
 	game_duration = sf::seconds(30);
 	current_day = 1;
+	passports_approved = 0;
 
 }
 
@@ -1194,6 +1218,11 @@ void Game::checkPlayerDead()
 
 
 }
+
+
+
+// - - - - - - - - - - - - - Restart Game - - - - - - - - - - - - -
+
 
 
 void Game::playBackgroundSound()
@@ -1226,7 +1255,12 @@ void Game::playBackgroundSound()
 	thunderstorm.setBuffer(thunderstorm_buffer);
 	thunderstorm.play();
 	thunderstorm.setLoop(true);
-	thunderstorm.setVolume(50);
+	thunderstorm.setVolume(75);
+
+	bear.setVolume(40);
+	pig.setVolume(50);
+	wolf.setVolume(50);
+
 }
 
 void Game::playAnimalSounds()

@@ -28,6 +28,7 @@ class Game
   sf::Font quit_font;
   sf::Font main_game_font;
   sf::Font dead_font;
+  sf::Font clock_font;
 
   sf::Text menu_text;
   sf::Text play_text;
@@ -40,6 +41,7 @@ class Game
   sf::Text end_of_day_text;
   sf::Text end_of_day_info_text;
   sf::Text current_day_text;
+  sf::Text start_next_day_text;
 
   sf::Clock game_clock;
   sf::Time game_duration;
@@ -59,7 +61,7 @@ class Game
   sf::RectangleShape overlay_rect;
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
-  float flood_max_timer = 60.0f * 2;
+  float flood_max_timer = 90.0f;
   float day_timer = 0.f;
 
   sf::Sprite* dragged = nullptr;
@@ -86,8 +88,8 @@ class Game
   sf::Sound thunderstorm;
   sf::SoundBuffer bear_buffer;
   sf::Sound bear;
-  sf::SoundBuffer cow_buffer;
-  sf::Sound cow;
+  sf::SoundBuffer pig_buffer;
+  sf::Sound pig;
   sf::SoundBuffer frog_buffer;
   sf::Sound frog; 
   sf::SoundBuffer seagull_buffer;
