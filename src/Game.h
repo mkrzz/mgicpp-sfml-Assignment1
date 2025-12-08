@@ -3,6 +3,7 @@
 #define PLATFORMER_GAME_H
 
 #include <SFML/Graphics.hpp>
+#include "SFML/Audio.hpp"
 
 class Game
 {
@@ -81,11 +82,28 @@ class Game
   sf::Sprite lives;
   sf::Texture lives_texture;
 
+  sf::SoundBuffer thunderstorm_buffer;
+  sf::Sound thunderstorm;
+  sf::SoundBuffer bear_buffer;
+  sf::Sound bear;
+  sf::SoundBuffer cow_buffer;
+  sf::Sound cow;
+  sf::SoundBuffer frog_buffer;
+  sf::Sound frog; 
+  sf::SoundBuffer seagull_buffer;
+  sf::Sound seagull;
+  sf::SoundBuffer wolf_buffer;
+  sf::Sound wolf;
+
+  std::vector<sf::SoundBuffer> soundBuffers;
+  std::vector<sf::Sound> sounds;
+
   int player_lives = 3;
   int passports_approved = 0;
   int passports_approved_illegally = 0;
   int current_day = 1;
-
+  int animal_index;
+  int passport_index;
   
 
   bool in_menu = true;
@@ -150,6 +168,8 @@ class Game
   void updateEndofDayText();
   void updateCurrentDayText();
   void initialiseCurrentDayText();
+  void playBackgroundSound();
+  void playAnimalSounds();
 
 
 };

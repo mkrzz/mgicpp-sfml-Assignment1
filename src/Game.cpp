@@ -41,6 +41,8 @@ bool Game::init()
 	initialiseGameScreen();
 	initialiseGameTimer();
 	initialiseOverlay();
+	playBackgroundSound();
+	playAnimalSounds();
 	newAnimal();
 	
 	
@@ -60,7 +62,7 @@ void Game::update(float dt)
 		dragSprite(dragged);
 		floodTimer(dt);
 		checkPlayerDead();
-		gameTimer();
+		gameTimer();		
 
 		
 	}
@@ -353,7 +355,8 @@ void Game::drawPlayerLives()
 	for (int i = 0; i < player_lives; ++i)
 	{
 
-		lives.setPosition(345 + i * 70, 490);
+		lives.setPosition(155 + i * 50, 780);
+		lives.setRotation(5);
 		window.draw(lives);
 
 	}
@@ -673,7 +676,7 @@ void Game::initialisePlayerLives()
 
 	}
 	lives.setTexture(lives_texture);
-	lives.setScale(1.8f, 1.8f);
+	lives.setScale(1.3f, 1.3f);
 	
 
 	dead_text.setFont(main_game_font);
@@ -833,6 +836,9 @@ void Game::initialiseCurrentDayText()
 
 
 
+
+
+
 // - - - - - - - - - - - - - Spawn new animal - - - - - - - - - - - - -
 
 
@@ -845,8 +851,8 @@ void Game::newAnimal()
 	
 	stamp_pressed = false;
 
-	int animal_index = rand() % 5;
-	int passport_index = rand() % 5;
+	animal_index = rand() % 5;
+	passport_index = rand() % 5;
 
 	if (animal_index == passport_index)
 	{
@@ -1068,6 +1074,7 @@ void Game::handlePassportTextChoice()
 			passportApprovedText();
 			std::cout << "PASSPORT APPROVED - You may board the Ark\n";
 			passports_approved++;
+			sounds[animal_index].play();
 
 
 		}
@@ -1161,7 +1168,40 @@ void Game::checkPlayerDead()
 }
 
 
+void Game::playBackgroundSound()
+{
 
+	if (!thunderstorm_buffer.loadFromFile("../Data/Sound/Thunderstorm_sound.wav"))
+	{
+		std::cout << "Sound did not load";
+	}
+
+	thunderstorm.setBuffer(thunderstorm_buffer);
+	thunderstorm.play();
+	thunderstorm.setLoop(true);
+	thunderstorm.setVolume(50);
+}
+
+void Game::playAnimalSounds()
+{
+
+	soundBuffers.resize(5);
+	sounds.resize(5);
+
+	soundBuffers[0].loadFromFile("../Data/Sound/bear.wav");
+	soundBuffers[1].loadFromFile("../Data/Sound/frog.wav");
+	soundBuffers[2].loadFromFile("../Data/Sound/pig.wav");
+	soundBuffers[3].loadFromFile("../Data/Sound/Seagull.wav");
+	soundBuffers[4].loadFromFile("../Data/Sound/wolf.wav");
+	
+	for (int i = 0; i < 5; i++) 
+	{
+		sounds[i].setBuffer(soundBuffers[i]);
+	}
+
+	
+
+}
 
 
 
