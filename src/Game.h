@@ -98,6 +98,8 @@ class Game
   sf::Sound lose_life;
   sf::SoundBuffer thunderclap_buffer;
   sf::Sound thunderclap;
+  sf::SoundBuffer declined_buffer;
+  sf::Sound declined;
 
   std::vector<sf::SoundBuffer> soundBuffers;
   std::vector<sf::Sound> sounds;

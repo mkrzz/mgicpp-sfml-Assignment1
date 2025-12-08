@@ -214,42 +214,46 @@ void Game::mouseButtonPressed(sf::Event event)
 			if (accept_button.getGlobalBounds().contains(clickf))
 			{
 
+				// checks to see if the mouse is inside the bounds of the passport 
+				if (passport->getGlobalBounds().contains(clickf))
+				{
 
-				button_visability = false;
-				passport_accepted = true;
-				passport_rejected = false;
-				stamp_pressed = true;
+					button_visability = false;
+					passport_accepted = true;
+					passport_rejected = false;
+					stamp_pressed = true;
+
+					drawStamps();
+
+					accept_stamp.setPosition(accept_button.getPosition());
+					stamp_offset = accept_stamp.getPosition() - passport->getPosition();
+
+				}
+
 				
-
-				drawStamps();
-
-				// sets stamp to same position as button
-				accept_stamp.setPosition(accept_button.getPosition());
-
-				stamp_offset = accept_stamp.getPosition() - passport->getPosition();
-				
-				
-			
 
 			}
 
 			else if (reject_button.getGlobalBounds().contains(clickf))
 			{
 
+				if (passport->getGlobalBounds().contains(clickf))
+				{
 
-				button_visability = false;
-				passport_accepted = false;
-				passport_rejected = true;
-				stamp_pressed = true;
-				
-			
-				drawStamps();
+					button_visability = false;
+					passport_accepted = false;
+					passport_rejected = true;
+					stamp_pressed = true;
 
-				reject_stamp.setPosition(reject_button.getPosition());
 
-				stamp_offset = reject_stamp.getPosition() - passport->getPosition();
-				
+					drawStamps();
 
+					reject_stamp.setPosition(reject_button.getPosition());
+					stamp_offset = reject_stamp.getPosition() - passport->getPosition();
+
+				}
+
+								
 			}
 		}
 
@@ -918,8 +922,10 @@ void Game::dragSprite(sf::Sprite* sprite)
 		// sets the stamp positions relative to the passports when dragging
 		if (sprite == passport && stamp_pressed)
 		{
+
 			accept_stamp.setPosition(drag_position + stamp_offset);
 			reject_stamp.setPosition(drag_position + stamp_offset);
+
 		}
 
 	}
@@ -1118,6 +1124,7 @@ void Game::handlePassportTextChoice()
 
 			passportDeniedText();
 			std::cout << "PASSPORT DENIED\n";
+			declined.play();
 
 
 		}
@@ -1207,8 +1214,14 @@ void Game::playBackgroundSound()
 		std::cout << "Sound did not load";
 	}
 
+	if (!declined_buffer.loadFromFile("../Data/Sound/passport_rejected.wav"))
+	{
+		std::cout << "Sound did not load";
+	}
+
 	lose_life.setBuffer(lose_life_buffer);
 	thunderclap.setBuffer(thunderclap_buffer);
+	declined.setBuffer(declined_buffer);
 
 	thunderstorm.setBuffer(thunderstorm_buffer);
 	thunderstorm.play();
