@@ -63,7 +63,6 @@ void Game::update(float dt)
 		floodTimer(dt);
 		checkPlayerDead();
 		gameTimer();		
-
 		
 	}
 
@@ -106,7 +105,7 @@ void Game::render()
 		if (time_up)
 		{
 
-			drawFloodHasRisenText();
+			drawFloodHasRisenText();			
 			
 		}
 					
@@ -167,6 +166,7 @@ void Game::keyPressed(sf::Event event)
 
 				restartGame();
 				newAnimal();
+				
 
 			}
 			else if (show_overlay)
@@ -178,6 +178,15 @@ void Game::keyPressed(sf::Event event)
 				newAnimal();
 
 			}
+		}
+		else if (event.key.code == sf::Keyboard::Q)
+		{
+
+			if (time_up)
+			{
+				window.close();
+			}
+
 		}
 	}
 
@@ -417,6 +426,7 @@ void Game::drawWorld()
 void Game::drawFloodHasRisenText()
 {
 
+	
 	if (flood_timer >= flood_max_timer)
 	{
 
@@ -424,10 +434,12 @@ void Game::drawFloodHasRisenText()
 		sf::RectangleShape overlay(sf::Vector2f(window.getSize()));
 		overlay.setFillColor(sf::Color(0, 0, 0, 200));
 		
+		
 		window.draw(overlay);		
 		window.draw(overlay_rect);
 		window.draw(out_of_time_text);
 		window.draw(play_again_text);
+		window.draw(quit_game_text);
 
 
 		out_of_time_text.setFont(main_game_font);
@@ -435,6 +447,13 @@ void Game::drawFloodHasRisenText()
 		out_of_time_text.setFillColor(sf::Color::White);
 		out_of_time_text.setString("The flood has risen\nYou saved " + std::to_string(passports_approved) + " animals");
 		out_of_time_text.setPosition(window.getSize().x / 2 - out_of_time_text.getGlobalBounds().width / 2, 220);
+
+		quit_game_text.setFont(main_game_font);
+		quit_game_text.setCharacterSize(30);
+		quit_game_text.setLetterSpacing(4);
+		quit_game_text.setFillColor(sf::Color::White);
+		quit_game_text.setString("Press 'Q' to quit");
+		quit_game_text.setPosition(window.getSize().x / 2  - quit_game_text.getGlobalBounds().width / 2, 830);
 
 		
 
@@ -465,6 +484,7 @@ void Game::drawEndOfDay()
 	window.draw(end_of_day_text);
 	window.draw(end_of_day_info_text);
 	window.draw(start_next_day_text);
+	
 
 }
 
@@ -511,17 +531,16 @@ void Game::handleMenuSelection()
 	if (play_selected)
 	{
 
+
 		is_running = true;
 		in_menu = false;
-		thunderclap.play();
 		menu_music.stop();
 		game_music.play();
-
-
+		thunderclap.play();
 		game_clock.restart();
 		show_overlay = false;
-		time_up = false;
-		
+		time_up = false;	
+
 		
 	}
 	else
@@ -658,7 +677,7 @@ void Game::initialiseStamps()
 void Game::initialiseFloodGauge()
 {
 	flood_gauge.setSize(sf::Vector2f(200.f, 25.f));
-	flood_gauge.setFillColor(sf::Color::Blue);
+	flood_gauge.setFillColor(sf::Color(0, 0, 139, 255));
 	/*flood_gauge.setPosition(20.f, 300.f);*/
 }
 
@@ -812,7 +831,7 @@ void Game::initialiseMenuFonts()
 void Game::initialiseOverlay()
 {
 
-	// adds a transparantish overlay when player dies
+	// adds a transparantish overlay when player dies/ends a day
 	overlay.setSize(sf::Vector2f(window.getSize()));
 	overlay.setFillColor(sf::Color(0, 0, 0, 80));
 	overlay_rect.setSize(sf::Vector2f(1300, 800));
@@ -982,6 +1001,7 @@ void Game::floodTimer(float dt)
 		time_up = true;
 		is_running = false;
 		show_timer = false;
+		thunderclap.play();
 
 	}
 
@@ -1019,10 +1039,12 @@ void Game::gameTimer()
 		if (remaining <= sf::Time::Zero)
 		{
 
+			horn.play();
 			is_running = false;
 			show_overlay = true;
 			updateEndofDayText();
-			horn.play();
+			
+			
 			
 		}
 	}
@@ -1037,6 +1059,7 @@ void Game::startNewDay()
 	game_duration = sf::seconds(30);
 	game_clock.restart();
 	current_day++;
+	bell.play();
 
 
 }
@@ -1136,6 +1159,7 @@ void Game::handlePassportTextChoice()
 			player_lives--;
 			passports_approved_illegally++;
 			lose_life.play();
+			thunderclap.play();
 
 		}
 
@@ -1159,6 +1183,7 @@ void Game::handlePassportTextChoice()
 			std::cout << "VIOLATION - You rejected a valid passport\n";
 			player_lives--;
 			lose_life.play();
+			thunderclap.play();
 
 
 		}
@@ -1292,6 +1317,12 @@ void Game::initialiseSound()
 		std::cout << "Sound did not load";
 	}
 
+	if (!bell_buffer.loadFromFile("../Data/Sound/Flood_risen_bell.wav"))
+	{
+		std::cout << "Sound did not load";
+	}
+
+	bell.setBuffer(bell_buffer);
 	lose_life.setBuffer(lose_life_buffer);
 	thunderclap.setBuffer(thunderclap_buffer);
 	declined.setBuffer(declined_buffer);
@@ -1311,9 +1342,10 @@ void Game::initialiseSound()
 	thunderstorm.setVolume(7.f);
 	thunderstorm.play();
 
-	thunderclap.setVolume(0.f);
+	/*thunderclap.setVolume(90.f);*/
+	lose_life.setVolume(50.f);
 	
-
+	
 }
 
 

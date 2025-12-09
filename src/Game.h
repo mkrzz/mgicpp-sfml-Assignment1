@@ -42,6 +42,7 @@ class Game
   sf::Text end_of_day_info_text;
   sf::Text current_day_text;
   sf::Text start_next_day_text;
+  sf::Text quit_game_text;
 
   sf::Clock game_clock;
   sf::Time game_duration;
@@ -61,8 +62,7 @@ class Game
   sf::RectangleShape overlay_rect;
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
-  float flood_max_timer = 90.0f;
-  float day_timer = 0.f;
+  float flood_max_timer = 2.0f;
 
   sf::Sprite* dragged = nullptr;
   sf::Vector2f drag_offset;
@@ -108,6 +108,9 @@ class Game
   sf::Sound game_music;
   sf::SoundBuffer horn_buffer;
   sf::Sound horn;
+  sf::SoundBuffer bell_buffer;
+  sf::Sound bell;
+
 
   std::vector<sf::SoundBuffer> soundBuffers;
   std::vector<sf::Sound> sounds;
