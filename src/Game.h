@@ -62,7 +62,7 @@ class Game
   sf::RectangleShape overlay_rect;
   sf::RectangleShape flood_gauge;
   float flood_timer = 0.f;
-  float flood_max_timer = 2.0f;
+  float flood_max_timer = 90.0f;
 
   sf::Sprite* dragged = nullptr;
   sf::Vector2f drag_offset;

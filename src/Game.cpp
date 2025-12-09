@@ -631,20 +631,20 @@ void Game::initialisePassports()
 void Game::initialiseButtons()
 {
 
-	if (!accept_texture.loadFromFile("../Data/Images/Stamps/Approved.png"))
+	if (!accept_texture.loadFromFile("../Data/Images/Stamps/NewStamps(1)approved.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!reject_texture.loadFromFile("../Data/Images/Stamps/Rejected.png"))
+	if (!reject_texture.loadFromFile("../Data/Images/Stamps/NewStamps(1)declined.png"))
 	{
 		std::cout << "image did not load";
 	}
 
 	accept_button.setTexture(accept_texture);
 	reject_button.setTexture(reject_texture);
-	accept_button.setScale(.6f, .6f);
-	reject_button.setScale(.6f, .6f);
+	accept_button.setScale(.9f, .9f);
+	reject_button.setScale(.9f, .9f);
 
 
 
@@ -653,20 +653,20 @@ void Game::initialiseButtons()
 void Game::initialiseStamps()
 {
 
-	if (!accept_stamp_texture.loadFromFile("../Data/Images/Stamps/Approved_stamp.png"))
+	if (!accept_stamp_texture.loadFromFile("../Data/Images/Stamps/NewPrintedStampsApproved.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!reject_stamp_texture.loadFromFile("../Data/Images/Stamps/Rejected_stamp.png"))
+	if (!reject_stamp_texture.loadFromFile("../Data/Images/Stamps/NewPrintedStampsDeclined.png"))
 	{
 		std::cout << "image did not load";
 	}
 
 	accept_stamp.setTexture(accept_stamp_texture);
 	reject_stamp.setTexture(reject_stamp_texture);
-	accept_stamp.setScale(.6f, .6f);
-	reject_stamp.setScale(.6f, .6f);
+	accept_stamp.setScale(.8f, .8f);
+	reject_stamp.setScale(.8f, .8f);
 
 	
 
@@ -1248,7 +1248,7 @@ void Game::checkPlayerDead()
 
 
 
-// - - - - - - - - - - - - - Restart Game - - - - - - - - - - - - -
+// - - - - - - - - - - - - - Sound - - - - - - - - - - - - -
 
 
 
