@@ -444,9 +444,10 @@ void Game::drawFloodHasRisenText()
 
 		out_of_time_text.setFont(main_game_font);
 		out_of_time_text.setCharacterSize(100);
+		/*out_of_time_text.setLetterSpacing(0);*/
 		out_of_time_text.setFillColor(sf::Color::White);
 		out_of_time_text.setString("The flood has risen\nYou saved " + std::to_string(passports_approved) + " animals");
-		out_of_time_text.setPosition(window.getSize().x / 2 - out_of_time_text.getGlobalBounds().width / 2, 220);
+		out_of_time_text.setPosition(window.getSize().x / 2  - out_of_time_text.getGlobalBounds().width / 2, 220);
 
 		quit_game_text.setFont(main_game_font);
 		quit_game_text.setCharacterSize(30);
