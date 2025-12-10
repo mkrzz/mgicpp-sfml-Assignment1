@@ -1022,6 +1022,7 @@ void Game::floodTimer(float dt)
 
 void Game::gameTimer()
 {
+	
 
 	if (is_running)
 	{
@@ -1031,7 +1032,7 @@ void Game::gameTimer()
 
 		int remainingSeconds = static_cast<int>(remaining.asSeconds());
 		timer_text.setString(
-			std::to_string(std::max(remainingSeconds, 0)));
+		std::to_string(std::max(remainingSeconds, 0)));
 
 		updateCurrentDayText();
 
@@ -1044,11 +1045,12 @@ void Game::gameTimer()
 			is_running = false;
 			show_overlay = true;
 			updateEndofDayText();
-			
-			
-			
+
+
+
 		}
 	}
+	
 }
 
 void Game::startNewDay()
