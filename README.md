@@ -15,7 +15,7 @@ The tide is rising fast. Animals are trying to board the Ark to get to safety. A
   
 ![Game Screenshot](/Data/Screenshots/Gamescreenshot.png)
 
-![Game2 Screenshot](/Data/Screenshots/Gamescreenshot2.png)
+![Game2 Screenshot](/Data/Screenshots/Gamescreenshot_2.png)
 
 ### Features  
 In-game timer/flood gauge timer  
