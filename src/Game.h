@@ -53,6 +53,23 @@ class Game
   sf::Texture* animals = new sf::Texture[5];
   sf::Texture* passports = new sf::Texture[5];
 
+  sf::Vector2f animalScales[5] = {
+    {0.7f, 0.7f},   // bear
+    {0.14f, 0.14f},   // frog
+    {0.6f, 0.6f},   // pig
+    {0.7f, 0.7f},   // seagull
+    {0.49f, 0.49f}    // wolf
+  };
+
+  sf::Vector2f animalPositions[5] = {
+    {250.f, 240.f},   // bear
+    {360.f, 270.f},   // frog
+    {280.f, 270.f},   // pig
+    {230.f, 300.f},   // seagull
+    {320.f, 220.f}    // wolf
+  };
+
+
   sf::Sprite menu_background;
   sf::Texture menu_background_texture;
 

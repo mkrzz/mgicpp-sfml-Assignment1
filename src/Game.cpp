@@ -570,27 +570,27 @@ void Game::initialiseSprites()
 void Game::initialiseAnimals()
 {
 
-	if (!animals[0].loadFromFile("../Data/Images/Animal_set/Bear.png"))
+	if (!animals[0].loadFromFile("../Data/Images/Animal_silhouettes/Bear_silhouette.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!animals[1].loadFromFile("../Data/Images/Animal_set/Frog.png"))
+	if (!animals[1].loadFromFile("../Data/Images/Animal_silhouettes/Froggy.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!animals[2].loadFromFile("../Data/Images/Animal_set/Pig.png"))
+	if (!animals[2].loadFromFile("../Data/Images/Animal_silhouettes/Pig_silhouette.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!animals[3].loadFromFile("../Data/Images/Animal_set/Seagul.png"))
+	if (!animals[3].loadFromFile("../Data/Images/Animal_silhouettes/Seagull_silhouette.png"))
 	{
 		std::cout << "image did not load";
 	}
 	
-	if (!animals[4].loadFromFile("../Data/Images/Animal_set/Wolf.png"))
+	if (!animals[4].loadFromFile("../Data/Images/Animal_silhouettes/Wolf_silhouette.png"))
 	{
 		std::cout << "image did not load";
 	}
@@ -601,27 +601,27 @@ void Game::initialiseAnimals()
 void Game::initialisePassports()
 {
 
-	if (!passports[0].loadFromFile("../Data/Images/Passports/Bear_Passport.png"))
+	if (!passports[0].loadFromFile("../Data/Images/Passports/Bear_print_Passport.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!passports[1].loadFromFile("../Data/Images/Passports/Frog_Passport.png"))
+	if (!passports[1].loadFromFile("../Data/Images/Passports/Frog_print_Passport.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!passports[2].loadFromFile("../Data/Images/Passports/Pig_Passport.png"))
+	if (!passports[2].loadFromFile("../Data/Images/Passports/Pig_print_Passport.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!passports[3].loadFromFile("../Data/Images/Passports/Seagul_Passport.png"))
+	if (!passports[3].loadFromFile("../Data/Images/Passports/Seagull_print_Passport.png"))
 	{
 		std::cout << "image did not load";
 	}
 
-	if (!passports[4].loadFromFile("../Data/Images/Passports/Wolf_Passport.png"))
+	if (!passports[4].loadFromFile("../Data/Images/Passports/Wolf_print_Passport.png"))
 	{
 		std::cout << "image did not load";
 	}
@@ -899,6 +899,7 @@ void Game::newAnimal()
 	
 	stamp_pressed = false;
 
+	
 	animal_index = rand() % 5;
 	/*passport_index = rand() % 5;*/
 
@@ -937,8 +938,8 @@ void Game::newAnimal()
 		
 
 	character->setTexture(animals[animal_index], true);
-	character->setScale(.35, .35);
-	character->setPosition(360, 270);
+	character->setScale(animalScales[animal_index]);
+	character->setPosition(animalPositions[animal_index]);
 
 	passport->setTexture(passports[passport_index]);
 	passport->setScale(1.f, 1.f);
