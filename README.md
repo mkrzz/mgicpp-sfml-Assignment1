@@ -9,14 +9,6 @@ A Papers, Please type C++ game built using SFML
 ## Theme  
 The tide is rising fast. Animals are trying to board the Ark to get to safety. As an Ark Admission Control Officer, you are tasked with checking if the animals have the correct passports to get onboard.
 
-## Screenshots  
-
-![Menu Screenshot](/Data/Screenshots/Menuscreenshot.png)
-  
-![Game Screenshot](/Data/Screenshots/Gamescreenshot.png)
-
-![Game2 Screenshot](/Data/Screenshots/Gamescreenshot_2.png)
-
 ## Features  
 In-game timer/flood gauge timer  
 Passport/animal check system  
@@ -37,6 +29,14 @@ Q key - Quit game (After end game)
 Right click to open stamp context window (Accept, decline)  
 Left click to print stamp on passport  
 Left click + Drag - Give stamped passport back to animal  
+
+## Screenshots  
+
+![Menu Screenshot](/Data/Screenshots/Menuscreenshot.png)
+  
+![Game Screenshot](/Data/Screenshots/Gamescreenshot.png)
+
+![Game2 Screenshot](/Data/Screenshots/Gamescreenshot_2.png)
 
 ## References 
 
